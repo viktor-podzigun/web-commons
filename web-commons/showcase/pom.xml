@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+        http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <groupId>com.googlecode.web-commons</groupId>
+        <artifactId>web-commons</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>com.googlecode.web-commons</groupId>
+    <artifactId>web-common-showcase</artifactId>
+    <packaging>war</packaging>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <!-- To run from command line:
+        mvn gwt:run -Pdev
+    -->
+    <name>${project.artifactId}</name>
+    
+    <properties>
+        <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
+    </properties>
+    
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        
+        <!-- Generate compiled stuff in the folder used for developing mode -->
+        <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
+        
+        <plugins>
+            <!-- Copy static web files before executing gwt:run -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1.1</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>exploded</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <webappDirectory>${webappDirectory}</webappDirectory>
+                </configuration>
+            </plugin>
+            
+            <!-- GWT Maven Plugin -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <version>${gwt-version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                
+                <!-- Plugin configuration. There are many available options, see
+                gwt-maven-plugin documentation at codehaus.org -->
+                <configuration>
+                    <runTarget>showcase.html</runTarget>
+                    <hostedWebapp>${webappDirectory}</hostedWebapp>
+                    <extraJvmArgs>-Xmx896m -XX:MaxPermSize=128m</extraJvmArgs>
+                    <debugPort>7000</debugPort>
+                    <!--bindAddress>0.0.0.0</bindAddress-->
+                    
+                    <compileSourcesArtifacts>
+                        <artifact>javax.ws.rs:jsr311-api</artifact>
+                        <artifact>org.fusesource.restygwt:restygwt</artifact>
+                        <artifact>com.google.gwt.inject:gin</artifact>
+                        <artifact>com.google.gwt.eventbinder:eventbinder</artifact>
+                        
+                        <artifact>com.googlecode.web-commons:web-common-protocol</artifact>
+                        <artifact>com.googlecode.web-commons:web-common-client</artifact>
+                    </compileSourcesArtifacts>
+                </configuration>
+            </plugin>
+            
+            <!-- mvn package jetty:deploy-war -->
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>maven-jetty-plugin</artifactId>
+                <version>6.1.19</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                        <version>1.1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>javax.servlet</groupId>
+                        <artifactId>servlet-api</artifactId>
+                        <version>2.5</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+    
+    <dependencies>
+        <dependency>
+            <groupId>com.googlecode.web-commons</groupId>
+            <artifactId>web-common-client</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Tests -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.0.0.GA</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.0.0.GA</version>
+            <classifier>sources</classifier>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <!-- Got from here: 
+            http://mojo.codehaus.org/gwt-maven-plugin/user-guide/productivity.html
+        -->
+        <profile>
+           <id>dev</id>
+           <build>
+             <plugins>
+               <plugin>
+                 <groupId>org.codehaus.mojo</groupId>
+                 <artifactId>build-helper-maven-plugin</artifactId>
+                 <version>1.8</version>
+                 <executions>
+                   <execution>
+                     <id>add-source</id>
+                     <phase>generate-sources</phase>
+                     <goals>
+                       <goal>add-source</goal>
+                     </goals>
+                     <configuration>
+                       <sources>
+                         <source>../protocol/src/main/java</source>
+                         <source>../client/src/main/java</source>
+                       </sources>
+                     </configuration>
+                   </execution>
+                   <execution>
+                     <id>add-resource</id>
+                     <phase>generate-resources</phase>
+                     <goals>
+                       <goal>add-resource</goal>
+                     </goals>
+                     <configuration>
+                       <resources>
+                         <resource>
+                           <directory>../client/src/main/resources</directory>
+                         </resource>
+                       </resources>
+                     </configuration>
+                   </execution>
+                 </executions>
+               </plugin>
+             </plugins>
+           </build>
+        </profile>
+    </profiles>    
+
+</project>

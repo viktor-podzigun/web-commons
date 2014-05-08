@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder' 
+             xmlns:g='urn:import:com.google.gwt.user.client.ui' 
+             xmlns:c="urn:import:com.googlecode.common.client.ui">
+  
+  <ui:style>
+      .example {
+        background-color: #f5f5f5;
+      }
+  </ui:style>
+
+  <g:HTMLPanel>
+    
+    <h3>DropdownButton</h3>
+    <p>Demonstrates DropdownButton functionality.</p>
+    <div class="bs-docs-example {style.example}">
+      <c:DropdownButton ui:field="dropdownButton" />
+      <c:ButtonsPanel ui:field="dropdownPanel" />
+    </div>
+<pre class="prettyprint linenums"><![CDATA[
+PopupMenu subMenu = new PopupMenu();
+subMenu.addMenuItem(new MenuItem("Sub Action", cmd));
+MenuItem disabled = new MenuItem("Disabled", cmd);
+disabled.setEnabled(false);
+subMenu.addMenuItem(disabled);
+
+PopupMenu menu = new PopupMenu();
+menu.addMenuItem(new MenuItem(ButtonImages.INSTANCE.add(), 
+        "Action 1", cmd));
+menu.addMenuItem(new MenuItem(null, "Action 2", cmd));
+menu.addSeparator();
+menu.addMenuItem(new MenuItem(null, "Sub Menu", subMenu));
+
+dropdownButton = new DropdownButton("Action", menu);
+dropdownButton.setImage(ButtonImages.INSTANCE.add());
+]]></pre>
+
+    <h3>SplitButton</h3>
+    <p>DropdownButton with default action.</p>
+    <div class="bs-docs-example {style.example}">
+      <c:SplitButton ui:field="splitButton" />
+      <c:ButtonsPanel ui:field="splitPanel" />
+    </div>
+<pre class="prettyprint linenums"><![CDATA[
+PopupMenu menu = new PopupMenu();
+...
+
+splitButton = new SplitButton("Action", menu, new ClickHandler() {
+    @Override
+    public void onClick(ClickEvent event) {
+        // default action
+    }
+});
+]]></pre>
+
+  </g:HTMLPanel>
+</ui:UiBinder>

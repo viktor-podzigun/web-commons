@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder' 
+             xmlns:g='urn:import:com.google.gwt.user.client.ui' 
+             xmlns:c="urn:import:com.googlecode.common.client.ui">
+  
+  <ui:style>
+      .example {
+        background-color: #f5f5f5;
+      }
+  </ui:style>
+
+  <g:HTMLPanel>
+    
+    <h3>Modal</h3>
+    <p>Popup with header, body, footer, and close button.</p>
+    <div class="bs-docs-example {style.example}">
+      <c:ImageButton ui:field="demoButton" text="Demo" primary="true" />
+    </div>
+<pre class="prettyprint linenums"><![CDATA[
+Modal modal = new Modal("Modal header", true);
+modal.setBody(new HTML("<p>One fine body...</p>"));
+
+ButtonsPanel bp = modal.getButtonsPanel();
+bp.setActionProvider(...);
+bp.addButton(ButtonType.OK);
+bp.addButton(ButtonType.CANCEL);
+
+modal.show();
+]]></pre>
+
+    <h3>MessageBox</h3>
+    <p>Popup with header, message, input, and OK/YES/NO/CANCEL buttons.</p>
+    <div class="bs-docs-example {style.example}">
+      <c:ImageButton ui:field="msgButton" text="Message" primary="true" />
+      <c:ImageButton ui:field="inputButton" text="Input" primary="true" />
+      <c:ImageButton ui:field="confirmButton" text="Confirm" primary="true" />
+    </div>
+<pre class="prettyprint linenums"><![CDATA[
+// Message
+MessageBox.showMessage("Hello World!");
+
+// Input
+final MessageBox box = new MessageBox();
+box.showInput("Please, enter a value", "", new Command() {
+    @Override
+    public void execute() {
+        box.hide();
+        MessageBox.showMessage("You entered: " + box.getInputValue());
+    }
+});
+
+// Confirm
+final MessageBox box = new MessageBox();
+box.showConfirm("Do You like Java?", new Command() {
+    @Override
+    public void execute() {
+        box.hide();
+        MessageBox.showMessage("You selected: " 
+                + box.getSelectedOption());
+    }
+});
+]]></pre>
+
+    <h3>ErrorPanel</h3>
+    <p>Popup with error message.</p>
+    <div class="bs-docs-example {style.example}">
+      <c:ImageButton ui:field="errorButton" text="Show Error" primary="true" />
+    </div>
+<pre class="prettyprint linenums"><![CDATA[
+ErrorPanel.showError("Test error message", new Exception());
+]]></pre>
+
+  </g:HTMLPanel>
+</ui:UiBinder>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder' 
+             xmlns:g='urn:import:com.google.gwt.user.client.ui' 
+             xmlns:c="urn:import:com.googlecode.common.client.ui">
+  
+  <ui:style>
+      .example {
+        background-color: #f5f5f5;
+      }
+  </ui:style>
+
+  <g:HTMLPanel>
+    
+    <h3>TabPanel</h3>
+    <p>Demonstrates tabs functionality.</p>
+    <div class="bs-docs-example {style.example}">
+      <c:TabPanel ui:field="tabTop" />
+    </div>
+<pre class="prettyprint linenums"><![CDATA[
+TabPanel tabPanel = new TabPanel();
+tabPanel.add(new HTML("<p>Content for tab 1</p>"), "Tab 1");
+
+tabPanel.add(new HTML("<p>Content for tab 2</p>"));
+tabPanel.setTabText(1, "Tab 2");
+tabPanel.setTabImage(1, ButtonImages.INSTANCE.find());
+
+tabPanel.add(new HTML("<p>Content for tab 3</p>"), "Tab 3");
+]]></pre>
+
+    <h3>Tabs on the left</h3>
+    <div class="bs-docs-example {style.example}">
+      <c:TabPanel ui:field="tabLeft" />
+    </div>
+<pre class="prettyprint linenums"><![CDATA[
+TabPanel tabPanel = new TabPanel(Direction.LEFT);
+...
+]]></pre>
+
+    <h3>Tabs on the bottom</h3>
+    <div class="bs-docs-example {style.example}">
+      <c:TabPanel ui:field="tabBottom" />
+    </div>
+<pre class="prettyprint linenums"><![CDATA[
+TabPanel tabPanel = new TabPanel(Direction.BOTTOM);
+...
+]]></pre>
+
+  </g:HTMLPanel>
+</ui:UiBinder>
