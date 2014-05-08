@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder' 
+             xmlns:g='urn:import:com.google.gwt.user.client.ui' 
+             xmlns:c="urn:import:com.googlecode.common.client.ui">
+  
+  <ui:style>
+      .example {
+        background-color: #f5f5f5;
+      }
+  </ui:style>
+
+  <g:HTMLPanel>
+    
+    <h3>Toolbar</h3>
+    <p>Buttons without text (but with tooltips) and combined in group.</p>
+    <div class="bs-docs-example {style.example}">
+      <c:ButtonsPanel ui:field="bp1" />
+    </div>
+<pre class="prettyprint linenums"><![CDATA[
+bp1 = new ButtonsPanel(ButtonType.ADD, ButtonType.REMOVE, 
+        ButtonType.EDIT);
+bp1.setActionProvider(this);
+bp1.setShowText(false);
+bp1.setGroup(true);
+]]></pre>
+
+    <h3>Buttons</h3>
+    <p>Buttons with labels.</p>
+    <div class="bs-docs-example {style.example}">
+      <c:ButtonsPanel ui:field="bp2" />
+    </div>
+<pre class="prettyprint linenums"><![CDATA[
+bp2 = new ButtonsPanel(ButtonType.ADD, ButtonType.REMOVE, 
+        ButtonType.EDIT);
+
+AnchorButton exportBtn2 = new AnchorButton(
+        ButtonImages.INSTANCE.save(), "Export", "#");
+exportBtn2.setDisabledImage(ButtonImages.INSTANCE.saveDisabled());
+exportBtn2.setCommand(CMD_EXPORT);
+exportBtn2.setHref("#");
+exportBtn2.setPrimary(true);
+bp2.setActionProvider(this);
+]]></pre>
+  
+  </g:HTMLPanel>
+</ui:UiBinder>
