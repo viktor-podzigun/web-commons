@@ -7,8 +7,9 @@
   
     <parent>
         <groupId>com.googlecode.web-commons</groupId>
-        <artifactId>web-commons</artifactId>
+        <artifactId>web-common-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../web-common-parent</relativePath>
     </parent>
 
     <groupId>com.googlecode.web-commons</groupId>
@@ -17,6 +18,22 @@
     <version>1.0.0-SNAPSHOT</version>
 
     <name>${project.artifactId}</name>
+
+    <description>Contains common DAO classes</description>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <organization>
+        <name>Google Code</name>
+    </organization>
+    
+    <scm>
+       <connection>scm:svn:${svn.base.url}/trunk/${project.artifactId}</connection>
+    </scm>
 
     <dependencies>
         <dependency>
@@ -28,4 +45,22 @@
         </dependency>
     </dependencies>
     
+    <developers>
+        <developer>
+            <id>viktorp</id>
+            <name>Viktor Podzigun</name>
+            <email>viktor.podzigun@gmail.com</email>
+        </developer>
+        <developer>
+            <id>olexandr</id>
+            <name>Olexandr Matyash</name>
+            <email>matyash.olexandr@gmail.com</email>
+        </developer>
+        <developer>
+            <id>vladislav</id>
+            <name>Vladislav Ogol</name>
+            <email>vladislav.ogol@gmail.com</email>
+        </developer>
+    </developers>
+
 </project>

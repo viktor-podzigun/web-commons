@@ -7,8 +7,9 @@
     
     <parent>
         <groupId>com.googlecode.web-commons</groupId>
-        <artifactId>web-commons</artifactId>
+        <artifactId>web-common-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../web-common-parent</relativePath>
     </parent>
 
     <groupId>com.googlecode.web-commons</groupId>
@@ -22,6 +23,7 @@
     <name>${project.artifactId}</name>
     
     <properties>
+        <gwt-version>2.5.1</gwt-version>
         <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
     </properties>
     
