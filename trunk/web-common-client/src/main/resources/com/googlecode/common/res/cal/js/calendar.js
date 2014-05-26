@@ -1106,7 +1106,7 @@ if(!String.prototype.formatNum) {
 
 		that.fadeOut('fast');
 
-		slider.slideUp('fast', function() {
+		slider.slideUp(0, function() {
 			var event_list = $('.events-list', cell);
 			slider.html(self.options.templates['events-list']({
 				cal:    self,

@@ -79,7 +79,7 @@
 			getTemplate(options.newId, this.timeIcon, options.pickDate,
 					options.pickTime, options.pick12HourFormat,
 					options.pickSeconds, options.collapse)).appendTo(
-							"body");
+							"#" + options.pickerId);
 			this.minViewMode = options.minViewMode
 					|| this.$element.data("date-minviewmode") || 0;
 			if (typeof this.minViewMode === "string") {
@@ -251,7 +251,6 @@
 						localDate.getMilliseconds()))
 		},
 		place : function() {
-			var position = "absolute";
 			var offset = this.component ? this.component.offset()
 					: this.$element.offset();
 			this.width = this.component ? this.component.outerWidth()
@@ -265,11 +264,6 @@
 				this.widget.addClass("left-oriented");
 				offset.left = offset.left - this.widget.width() + 20
 			}
-			if (this._isInFixed()) {
-				position = "fixed";
-				offset.top -= $window.scrollTop();
-				offset.left -= $window.scrollLeft()
-			}
 			if ($window.width() < offset.left + this.widget.outerWidth()) {
 				offset.right = $window.width() - offset.left - this.width;
 				offset.left = "auto";
@@ -278,8 +272,17 @@
 				offset.right = "auto";
 				this.widget.removeClass("pull-right")
 			}
+			var parents = this.$element.parents();
+			for (var i = 0; i < parents.length; i++) {
+				if ($(parents[i]).css("position") == "relative") {
+					var relativeOffset = $(parents[i]).offset();
+					offset.left = offset.left - relativeOffset.left;
+					offset.top = offset.top - relativeOffset.top + $(parents[i]).scrollTop();
+					break
+				}
+			}
 			this.widget.css({
-				position : position,
+				position : "absolute",
 				top : offset.top,
 				left : offset.left,
 				right : offset.right
@@ -290,7 +293,11 @@
 				type : "changeDate",
 				date : this.getDate(),
 				localDate : this.getLocalDate()
-			})
+			});
+			if (this.externalChange != true) {
+				this.ignoreChangeEvent = true; 
+				this.$element.find("input").trigger('change');
+			}
 		},
 		update : function(newDate) {
 			var dateStr = newDate;
@@ -769,27 +776,32 @@
 			}
 		},
 		change : function(e) {
-			var input = $(e.target);
-			var val = input.val();
-			if (this._formatPattern.test(val)) {
-				this.update();
-				this.setValue(this._date.getTime());
-				this.notifyChange();
-				this.set()
-			} else if (val && val.trim()) {
-				this.setValue(this._date.getTime());
-				if (this._date)
-					this.set();
-				else
-					input.val("")
-			} else {
-				if (this._date) {
-					this.setValue(null);
+			if (this.ignoreChangeEvent != true) {
+				this.externalChange = true;
+				var input = $(e.target); 
+				var val = input.val();
+				if (this._formatPattern.test(val)) {
+					this.update();
+					this.setValue(this._date.getTime());
 					this.notifyChange();
-					this._unset = true
+					this.set()
+				} else if (val && val.trim()) {
+					this.setValue(this._date.getTime());
+					if (this._date)
+						this.set();
+					else
+						input.val("")
+				} else {
+					if (this._date) {
+						this.setValue(null);
+						this.notifyChange();
+						this._unset = true
+					}
 				}
+				this._resetMaskPos(input)
 			}
-			this._resetMaskPos(input)
+			this.ignoreChangeEvent = false; 
+			this.externalChange = false;
 		},
 		showMode : function(dir) {
 			if (dir) {
@@ -1019,21 +1031,6 @@
 			$(window).off("resize.datetimepicker" + this.id);
 			if (!this.isInput) {
 				$(document).off("mousedown.datetimepicker" + this.id)
-			}
-		},
-		_isInFixed : function() {
-			if (this.$element) {
-				var parents = this.$element.parents();
-				var inFixed = false;
-				for (var i = 0; i < parents.length; i++) {
-					if ($(parents[i]).css("position") == "fixed") {
-						inFixed = true;
-						break
-					}
-				}
-				return inFixed
-			} else {
-				return false
 			}
 		}
 	};

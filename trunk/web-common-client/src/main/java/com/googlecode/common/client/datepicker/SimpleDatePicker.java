@@ -3,9 +3,14 @@ package com.googlecode.common.client.datepicker;
 
 import java.util.Date;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.DomEvent;
+import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
@@ -25,7 +30,8 @@ import com.googlecode.common.client.ui.StateButton;
 import com.googlecode.common.client.util.DateHelpers;
 
 
-public final class SimpleDatePicker extends Composite {
+public final class SimpleDatePicker extends Composite implements 
+        HasChangeHandlers {
     
     public static enum Type {
        DATE_AND_TIME,
@@ -37,9 +43,12 @@ public final class SimpleDatePicker extends Composite {
     interface Binder extends UiBinder<Widget, SimpleDatePicker> {
     }
     
-    private HandlerRegistration nativePreviewHandlerRegistration;
-    private final String pickerWidgetId;
-    private final Type type;
+    private final String    pickerWidgetId;
+    private final Type      type;
+    
+    private boolean             loaded;
+    private HandlerRegistration hndlrReg;
+    private Date                dateBeforeLoad;
     
     @UiField HTMLPanel      picker;
     @UiField StateButton    button;
@@ -47,15 +56,26 @@ public final class SimpleDatePicker extends Composite {
 
     
     public SimpleDatePicker() {
-        this(Type.DATE_AND_TIME);
+        this(Type.DATE_AND_TIME, true);
     }
     
-    public SimpleDatePicker(Type type) {
+    public SimpleDatePicker(boolean enabled) {
+        this(Type.DATE_AND_TIME, enabled);
+    }
+    
+    public SimpleDatePicker(Type type, boolean enabled) {
         this.type = type;
         
         initWidget(binder.createAndBindUi(this));
 
         textBox.setStyleName("input-medium");
+        textBox.addDomHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent event) {
+                fireChangeEvent();
+            }
+        }, ChangeEvent.getType());
+        
         picker.getElement().setId(DOM.createUniqueId());
         pickerWidgetId = DOM.createUniqueId();
         
@@ -69,12 +89,19 @@ public final class SimpleDatePicker extends Composite {
                 }
             }
         });
+        
+        setEnabled(enabled);
+    }
+    
+    @Override
+    public HandlerRegistration addChangeHandler(ChangeHandler handler) {
+        return addHandler(handler, ChangeEvent.getType());
     }
     
     @Override
     protected void onLoad() {
         super.onLoad();
-
+        loaded = true;
         String id = picker.getElement().getId(); 
         
         if (type == null || type.equals(Type.DATE_AND_TIME)) {
@@ -90,9 +117,12 @@ public final class SimpleDatePicker extends Composite {
             button.setGlyphIcon("icon-time");
         }
         
-        nativePreviewHandlerRegistration = Event.addNativePreviewHandler(
-                new NativePreviewHandler() {
-                    
+        if (dateBeforeLoad != null) {
+            setDate(dateBeforeLoad);
+            dateBeforeLoad = null;
+        }
+        
+        hndlrReg = Event.addNativePreviewHandler(new NativePreviewHandler() {
             @Override
             public void onPreviewNativeEvent(NativePreviewEvent event) {
                 if (!button.getValue()) {
@@ -122,12 +152,25 @@ public final class SimpleDatePicker extends Composite {
     
     @Override
     protected void onUnload() {
-        nativePreviewHandlerRegistration.removeHandler();
+        hndlrReg.removeHandler();
         _destroy(picker.getElement().getId());
+        loaded = false;
         
         super.onUnload();
     }
     
+    protected void fireChangeEvent() {
+        DomEvent.fireNativeEvent(Document.get().createChangeEvent(), this);
+    }
+    public void setEnabled(boolean enabled) {
+        button.setEnabled(enabled);
+        textBox.setEnabled(enabled);
+    }
+    
+    public boolean isEnabled() {
+        return button.isEnabled();
+    }
+
     /**
      * Returns defined date
      * 
@@ -163,7 +206,7 @@ public final class SimpleDatePicker extends Composite {
     /**
      * Returns time period in seconds 
      * 
-     * @return time period in seconds if it war defined, null otherwise.
+     * @return time period in seconds if it was defined, null otherwise.
      */
     public Long getTimePeriod() {
         String timeStr = textBox.getText().trim();
@@ -184,9 +227,25 @@ public final class SimpleDatePicker extends Composite {
     }
 
     public void setDate(Date newDate) {
-        if (newDate != null) {
-            _setDate(picker.getElement().getId(), newDate.getTime());
+        if (loaded) {
+            if (newDate != null) {
+                _setDate(picker.getElement().getId(), newDate.getTime());
+            } else {
+                textBox.setText("");
+            }
+        } else {
+            dateBeforeLoad = newDate;
         }
+    }
+    
+    public void setDateUTC(Date date) {
+        Date newDate = new Date();
+        
+        @SuppressWarnings("deprecation")
+        int timeZoneOffset = newDate.getTimezoneOffset();
+        
+        newDate.setTime(date.getTime() + timeZoneOffset * 60L * 1000L);
+        setDate(newDate);
     }
     
     private void show() {
@@ -223,7 +282,8 @@ public final class SimpleDatePicker extends Composite {
              format: format,
              pickDate: pickDate,
              pickTime: pickTime,
-             newId : newId
+             newId : newId,
+             pickerId : id
         });
 
 //        el.data('datetimepicker').set(); // fill the text field

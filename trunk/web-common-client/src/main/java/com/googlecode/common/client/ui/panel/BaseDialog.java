@@ -1,6 +1,7 @@
 
 package com.googlecode.common.client.ui.panel;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.common.client.ui.ButtonType;
 import com.googlecode.common.client.ui.ButtonsPanel;
@@ -49,4 +50,16 @@ public abstract class BaseDialog {
         modal.setMaxHeight(maxHeight);
     }
     
+    public static Double getMaxAvailableHeight() {
+        // Hardcoded params of modal dialog
+        Double topPercent = 10d;
+        Double headerHeight = 49d;
+        Double footerHeight = 61d;
+        Double padding = 15d;
+        
+        return Window.getClientHeight() * (100 - topPercent) / 100d 
+            - headerHeight
+            - footerHeight
+            - padding * 2;
+    }    
 }
