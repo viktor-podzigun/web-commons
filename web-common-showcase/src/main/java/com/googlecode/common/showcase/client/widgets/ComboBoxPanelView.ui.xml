@@ -37,7 +37,14 @@
           <c:LoadableComboBox ui:field="loadableComboBox" />
           <c:ImageCheckBox ui:field="loadableComboBoxEnable" value="true" text="Enabled" />
           <c:ImageCheckBox ui:field="loadableComboBoxEditable" value="false" text="Editable" />
-        </div>
+          <hr/>
+          ComboBox style:
+          <br/>
+          <c:RadioBtn ui:field="none" name="comboSt" text="none" checked="true"/>
+          <c:RadioBtn ui:field="inputXlarge" name="comboSt" text="input-xlarge"/>
+          <c:RadioBtn ui:field="inputMedium" name="comboSt" text="input-medium"/>
+          <c:RadioBtn ui:field="inputMini" name="comboSt" text="input-mini"/>
+          </div>
         <div class="span6">
             Selected Item: 
             <c:ImageLabel ui:field="loadableComboBoxLabel" />

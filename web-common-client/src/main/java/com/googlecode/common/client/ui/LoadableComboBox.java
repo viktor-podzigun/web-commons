@@ -113,6 +113,33 @@ public class LoadableComboBox<T> extends AbstractComboBox<T> {
             }
         });
     }
+    @Override
+    public void addStyleDependentName(String styleSuffix) {
+        textField.addStyleDependentName(styleSuffix);
+    }
+    
+    @Override
+    public void addStyleName(String style) {
+        textField.addStyleName(style);
+    }
+    
+    @Override
+    public void setStyleDependentName(String styleSuffix, boolean add) {
+        textField.setStyleDependentName(styleSuffix, add);
+    }
+    @Override
+    public void setStyleName(String style) {
+        textField.setStyleName(style);
+    }
+    @Override
+    public void setStyleName(String style, boolean add) {
+        textField.setStyleName(style, add);
+    }
+    
+    @Override
+    public void setStylePrimaryName(String style) {
+        textField.setStylePrimaryName(style);
+    }
     
     @Override
     public HandlerRegistration addKeyDownHandler(KeyDownHandler handler) {

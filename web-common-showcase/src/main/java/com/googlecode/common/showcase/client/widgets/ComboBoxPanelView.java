@@ -75,6 +75,26 @@ public final class ComboBoxPanelView extends AbstractPanelView {
         return list;
     }
 
+    @UiHandler("none")
+    void onComboBoxDefaultStyle(ClickEvent event) {
+        loadableComboBox.setStyleName("");
+    }
+    
+    @UiHandler("inputXlarge")
+    void onComboBoxXlargeStyle(ClickEvent event) {
+        loadableComboBox.setStyleName("input-xlarge");
+    }
+    
+    @UiHandler("inputMedium")
+    void onComboBoxMediumStyle(ClickEvent event) {
+        loadableComboBox.setStyleName("input-medium");
+    }
+    
+    @UiHandler("inputMini")
+    void onComboBoxMiniStyle(ClickEvent event) {
+        loadableComboBox.setStyleName("input-mini");
+    }
+    
     @UiHandler("comboBoxEnable")
     void onComboBoxEnable(ClickEvent event) {
         comboBox.setEnabled(!comboBox.isEnabled());

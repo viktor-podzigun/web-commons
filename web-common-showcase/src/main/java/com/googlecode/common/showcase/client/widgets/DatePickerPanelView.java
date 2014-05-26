@@ -30,11 +30,14 @@ public final class DatePickerPanelView extends AbstractPanelView {
     
     public DatePickerPanelView() {
         picker1 = new SimpleDatePicker();
-        picker2 = new SimpleDatePicker(SimpleDatePicker.Type.DATE_ONLY);
-        picker3 = new SimpleDatePicker(SimpleDatePicker.Type.TIME_ONLY);
+        picker2 = new SimpleDatePicker(SimpleDatePicker.Type.DATE_ONLY, true);
+        picker3 = new SimpleDatePicker(SimpleDatePicker.Type.TIME_ONLY, true);
         
         initWidget(binder.createAndBindUi(this));
         dateField.setText(DateHelpers.formatDate(new Date()));
+        
+        String date = DateHelpers.formatDateOnly(new Date());
+        picker1.setDate(DateHelpers.parseDate(date + " 00:00:00"));
     }
     
     @UiHandler("btn1GetDate")
@@ -54,6 +57,16 @@ public final class DatePickerPanelView extends AbstractPanelView {
         } catch (IllegalArgumentException ex) {
             ErrorPanel.show("Date format must be yyyy-MM-dd HH:mm:ss");
         }
+    }
+    
+    @UiHandler("btnClearDate")
+    void onBtnClearDate(ClickEvent event) {
+        picker1.setDate(null);
+    }
+    
+    @UiHandler("picker1Enable")
+    void onPicker1Enable(ClickEvent event) {
+        picker1.setEnabled(!picker1.isEnabled());
     }
     
     @UiHandler("btn2GetDate")

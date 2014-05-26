@@ -25,7 +25,9 @@
         <form class="form-inline">
             <c:TextField ui:field="dateField" styleName="input-medium" title="YYYY-MM-DD hh:mm:ss" />
             <g:Button ui:field="btnSetDate" styleName="btn btn-primary" text="Set Date" />
-        </form> 
+            <g:Button ui:field="btnClearDate" styleName="btn btn-primary" text="Clear Date" />
+        </form>
+        <c:ImageCheckBox ui:field="picker1Enable" value="true" text="Enabled" /> 
     </div>
 <pre class="prettyprint linenums"><![CDATA[
 picker1 = new SimpleDatePicker(); 
