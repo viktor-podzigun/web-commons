@@ -41,11 +41,46 @@ public final class RequestBuilder {
      * @param name      path variable name
      * @param value     value
      * @return          this object
+     * 
+     * @throws IllegalArgumentException if path variable with given {@code name} 
+     *                  was not found 
      */
     public RequestBuilder setParam(String name, String value) {
+        return setParam(name, value, false);
+    }
+
+    /**
+     * Sets first path variable with the given name to the given value.<br>
+     * Does nothing if path variable with given {@code name} was not found.
+     *  
+     * @param name      path variable name
+     * @param value     value
+     * @return          this object
+     */
+    public RequestBuilder setOptionalParam(String name, String value) {
+        return setParam(name, value, true);
+    }
+
+    /**
+     * Sets first path variable with the given name to the given value.
+     * 
+     * @param name      path variable name
+     * @param value     value
+     * @param optional  indicates that parameter is optional
+     * @return          this object
+     * @throws IllegalArgumentException if param with given name was not found
+     *                  and {@code optional} is {@code false}
+     */
+    private RequestBuilder setParam(String name, String value, 
+            boolean optional) {
+        
         String str = "{" + name + "}";
         int index = request.indexOf(str);
         if (index == -1) {
+            if (optional) {
+                return this;
+            }
+
             throw new IllegalArgumentException(
                     "No such request param: " + name);
         }
