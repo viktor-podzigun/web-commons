@@ -176,19 +176,21 @@ public class AdminServiceImpl implements AdminService {
             
             throw new OperationFailedException(
                     CommonResponses.INTERNAL_SERVER_ERROR, 
-                    "Failed to read user roles"
+                    "Failed to authorize user"
                         + ", status: " + resp.getStatus()
-                        + ", message: " + error);
+                        + ", error: " + error);
             
         } catch (RequestException x) {
             throw new OperationFailedException(
                     CommonResponses.AUTHENTICATION_FAILED, 
-                    "Failed to read user roles", x);
+                    "Failed to authorize user"
+                        + ", status: " + x.getStatus() 
+                        + ", message: " + x.getStatusText());
             
         } catch (IOException x) {
             throw new OperationFailedException(
                     CommonResponses.INTERNAL_SERVER_ERROR, 
-                    "Failed to read user roles", x);
+                    "Failed to authorize user", x);
         }
     }
     
