@@ -147,18 +147,23 @@ public final class CommonFilter implements Filter {
         HttpServletResponse httpResp = (HttpServletResponse)response;
         ResponseMessage respMsg = x.getResponseMessage();
         
+        String error = "Error occurred while performing " + httpReq.getMethod() 
+                + " request to " + httpReq.getRequestURI() 
+                + "\n\terror: " + x.getMessage() + (x.getCause() != null ? 
+                        ", cause: " + x.getCause().toString() : "");
+
         if (respMsg == CommonResponses.AUTHENTICATION_FAILED) {
             httpResp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            log.warn(error);
         
         } else if (respMsg == CommonResponses.ACCESS_DENIED) {
             httpResp.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            log.warn(error);
+        
+        } else {
+            log.error(error);
         }
         
-        log.error("Error occurred while performing " + httpReq.getMethod() 
-                + " request to " + httpReq.getRequestURI() 
-                + "\n\terror: " + x.getMessage() + (x.getCause() != null ? 
-                        ", cause: " + x.getCause().toString() : ""));
-
         serializeFailedResponse(httpReq, httpResp, respMsg, x);
     }
 
