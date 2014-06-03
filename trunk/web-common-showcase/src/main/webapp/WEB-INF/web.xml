@@ -11,7 +11,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>dummy</servlet-name>
-        <url-pattern>/proxy/*</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>

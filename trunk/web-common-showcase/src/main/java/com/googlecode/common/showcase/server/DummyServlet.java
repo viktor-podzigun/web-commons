@@ -31,6 +31,14 @@ public class DummyServlet extends HttpServlet {
         
         String path = req.getPathInfo();
         System.out.println("Path: " + path);
+//        System.out.println("ContextPath: " + req.getContextPath());
+//        System.out.println("QueryString: " + req.getQueryString());
+//        System.out.println("RequestURI: " + req.getRequestURI());
+//        System.out.println("RequestURL: " + req.getRequestURL());
+        if (path.startsWith("/proxy")) {
+            path = path.substring("/proxy".length());
+        }
+        
         if (path.startsWith("/showcase")) {
             path = path.substring("/showcase".length());
         }

@@ -48,7 +48,7 @@ public class Showcase extends AbstractClientApp implements ActionProvider  {
         updateUserInfo(loginDto);
         
         AppMainPanel mainPanel = ShowcaseInjector.INSTANCE.appPanel();
-        //mainPanel.setCopyright("");
+        mainPanel.setCopyright("Web Commons Showcase");
         
         BrowseTreePanel browsePanel = mainPanel.getBrowsePanel().getTreePanel();
         ButtonsPanel bp = browsePanel.getButtonsPanel();
