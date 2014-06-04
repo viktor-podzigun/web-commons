@@ -155,7 +155,7 @@
                 <configuration>
                     <mavenExecutorId>forked-path</mavenExecutorId>
                     <useReleaseProfile>false</useReleaseProfile>
-                    <arguments>${arguments} -Psonatype-oss-release</arguments>
+                    <arguments>-Psonatype-oss-release</arguments>
                     
                     <scmCommentPrefix>[${project.artifactId}] [maven-release-plugin] </scmCommentPrefix>
                     <tagBase>${svn.base.url}/tags/${project.artifactId}</tagBase>
