@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-        http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0         http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   
     <parent>
@@ -15,7 +12,7 @@
     <groupId>com.googlecode.web-commons</groupId>
     <artifactId>web-common-service</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     
     <name>${project.artifactId}</name>
     
@@ -32,9 +29,9 @@
     </organization>
     
     <scm>
-       <connection>scm:svn:${svn.base.url}/trunk/${project.artifactId}</connection>
-       <developerConnection>scm:svn:${svn.base.url}/trunk/${project.artifactId}</developerConnection>
-       <url>${svn.base.url}/trunk/</url>
+       <connection>scm:svn:https://web-commons.googlecode.com/svn/tags/web-common-service/1.0.0</connection>
+       <developerConnection>scm:svn:https://web-commons.googlecode.com/svn/tags/web-common-service/1.0.0</developerConnection>
+       <url>scm:svn:https://web-commons.googlecode.com/svn/tags/web-common-service/1.0.0</url>
     </scm>
 
     <properties>
@@ -65,12 +62,12 @@
         <dependency>
             <groupId>com.googlecode.web-commons</groupId>
             <artifactId>web-common-protocol</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.web-commons</groupId>
             <artifactId>web-common-dao</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0</version>
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
