@@ -15,7 +15,7 @@
     <groupId>com.googlecode.web-commons</groupId>
     <artifactId>web-common-showcase</artifactId>
     <packaging>war</packaging>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <!-- To run from command line:
         mvn gwt:run -Pdev
@@ -121,7 +121,7 @@
         <dependency>
             <groupId>com.googlecode.web-commons</groupId>
             <artifactId>web-common-client</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
