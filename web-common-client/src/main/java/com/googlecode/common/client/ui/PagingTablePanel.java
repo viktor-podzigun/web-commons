@@ -16,6 +16,7 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.HasRows;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.Range;
@@ -111,6 +112,10 @@ public abstract class PagingTablePanel<T> extends Composite {
             }
         });
     }
+    
+    public void setSelectionEventManager(DefaultSelectionEventManager<T> manager) {
+        table.setSelectionModel(tableSelModel, manager);
+    } 
     
     public T getSelectedItem() {
         return tableSelModel.getSelectedObject();
