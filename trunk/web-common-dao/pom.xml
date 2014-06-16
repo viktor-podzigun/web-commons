@@ -12,7 +12,7 @@
     <groupId>com.googlecode.web-commons</groupId>
     <artifactId>web-common-dao</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <name>${project.artifactId}</name>
 
