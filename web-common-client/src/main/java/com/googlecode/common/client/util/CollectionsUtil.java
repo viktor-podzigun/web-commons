@@ -12,6 +12,11 @@ public final class CollectionsUtil {
         public boolean predicate(P object);
     }
 
+    public interface Function<R, T> {
+
+        public R exec(T object);
+    }
+
     private CollectionsUtil() {
     }
 
@@ -71,5 +76,19 @@ public final class CollectionsUtil {
         }
 
         return filteredList;
+    }
+    
+    /**
+     * Builds a new List by applying a function to all elements of this list
+     * @return new {@code List} containing elements returned by {@code func}
+     */
+    public static <R, T> List<R> map(List<? extends T> list, Function<R, T> func) {
+        List<R> result = new ArrayList<R>();
+
+        for (T e : list) {
+            result.add(func.exec(e));
+        }
+
+        return result;
     }
 }
