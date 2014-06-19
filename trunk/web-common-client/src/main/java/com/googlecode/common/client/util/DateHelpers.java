@@ -11,6 +11,9 @@ import com.google.gwt.i18n.client.TimeZone;
  */
 public final class DateHelpers {
 
+    /** Date and time format pattern (<code>yyyy-MM-dd HH:mm:ss.SSS</code>) */
+    public static final String      DATE_MILLIS     = "yyyy-MM-dd HH:mm:ss.SSS";
+    
     /** Date and time format pattern (<code>yyyy-MM-dd HH:mm:ss</code>) */
     public static final String      DATE_AND_TIME   = "yyyy-MM-dd HH:mm:ss";
     
@@ -20,12 +23,25 @@ public final class DateHelpers {
     /** Time only format pattern (<code>HH:mm:ss</code>) */
     public static final String      TIME_ONLY       = "HH:mm:ss";
     
-    private static final long       MILLIS_IN_MINUTE = 60000L;
+    /** UTC time zone constant */
+    public static final TimeZone    TZ_UTC = TimeZone.createTimeZone(0);
     
-    private static final TimeZone   UTC = TimeZone.createTimeZone(0);
+    private static final long       MILLIS_IN_MINUTE = 60000L;
     
     
     private DateHelpers() {
+    }
+
+    /**
+     * Formats date using the specified pattern and time zone.
+     *  
+     * @param date      date to format
+     * @param pattern   date/time format pattern
+     * @param timeZone  time zone
+     * @return          formatted string
+     */
+    public static String format(Date date, String pattern, TimeZone timeZone) {
+        return DateTimeFormat.getFormat(pattern).format(date, timeZone);
     }
 
     /**
@@ -69,7 +85,7 @@ public final class DateHelpers {
      * @return      formatted string
      */
     public static String utcFormatDate(Date date) {
-        return DateTimeFormat.getFormat(DATE_AND_TIME).format(date, UTC);
+        return DateTimeFormat.getFormat(DATE_AND_TIME).format(date, TZ_UTC);
     }
     
     /**
@@ -82,7 +98,7 @@ public final class DateHelpers {
         @SuppressWarnings("deprecation")
         int timeZoneOffset = date.getTimezoneOffset();
         
-        return date.getTime() + timeZoneOffset * MILLIS_IN_MINUTE;
+        return date.getTime() + (timeZoneOffset * MILLIS_IN_MINUTE);
     }
 
     /**
@@ -93,7 +109,7 @@ public final class DateHelpers {
      * @return      formatted string
      */
     public static String utcFormatDateOnly(Date date) {
-        return DateTimeFormat.getFormat(DATE_ONLY).format(date, UTC);
+        return DateTimeFormat.getFormat(DATE_ONLY).format(date, TZ_UTC);
     }
     
     /**
@@ -104,7 +120,7 @@ public final class DateHelpers {
      * @return      formatted string
      */
     public static String utcFormatTimeOnly(Date date) {
-        return DateTimeFormat.getFormat(TIME_ONLY).format(date, UTC);
+        return DateTimeFormat.getFormat(TIME_ONLY).format(date, TZ_UTC);
     }
     
     /**
