@@ -92,7 +92,9 @@ public final class DateHelpers {
      * @return      formatted string
      */
     public static String formatDate(Date date) {
-        return formatDate(date.getTime());
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd'T'HH:mm:ss");
+        return dateFormat.format(date);
     }
     
     /**
@@ -102,8 +104,7 @@ public final class DateHelpers {
      * @return      formatted string
      */
     public static String formatDate(long date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss");
-        return dateFormat.format(new Date(date));
+        return formatDate(new Date(date));
     }
     
     /**
