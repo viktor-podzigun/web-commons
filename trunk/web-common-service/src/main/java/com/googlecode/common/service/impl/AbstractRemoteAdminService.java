@@ -18,8 +18,10 @@ import com.googlecode.common.protocol.BaseResponse;
 import com.googlecode.common.protocol.Permission;
 import com.googlecode.common.protocol.PermissionNode;
 import com.googlecode.common.protocol.admin.AdminRequests;
-import com.googlecode.common.protocol.admin.AppSettingsDTO;
-import com.googlecode.common.protocol.admin.AppSettingsResponse;
+import com.googlecode.common.protocol.admin.AppConfReqDTO;
+import com.googlecode.common.protocol.admin.AppConfRespDTO;
+import com.googlecode.common.protocol.admin.AppConfResponse;
+import com.googlecode.common.protocol.admin.AppSystemDTO;
 import com.googlecode.common.protocol.perm.PermissionDTO;
 import com.googlecode.common.protocol.perm.PermissionNodeDTO;
 import com.googlecode.common.service.AdminSettingsService;
@@ -31,6 +33,7 @@ import com.googlecode.common.service.ex.OperationFailedException;
 import com.googlecode.common.util.Bits;
 import com.googlecode.common.util.CollectionsUtil;
 import com.googlecode.common.util.NumUtils;
+import com.googlecode.common.util.SafeDigest;
 
 
 /**
@@ -48,15 +51,19 @@ public abstract class AbstractRemoteAdminService implements PermissionService,
         Executors.newCachedThreadPool();
     
     private PermissionNode          permissRoot;
+    private boolean                 loadSystemInfo;
     
     private volatile URI            adminUrl;
     private volatile RequestParams  requestParams = new RequestParams();
+    private volatile AdminData      adminData;
     
-    private volatile Map<Permission, int[]> permissionToRoles;
-
     
     protected AbstractRemoteAdminService(PermissionNode permissRoot) {
         this.permissRoot = permissRoot;
+    }
+
+    protected void setLoadSystemInfo(boolean loadSystemInfo) {
+        this.loadSystemInfo = loadSystemInfo;
     }
     
     protected void setPermissRoot(PermissionNode permissRoot) {
@@ -102,13 +109,26 @@ public abstract class AbstractRemoteAdminService implements PermissionService,
         return Bits.any(NumUtils.ensureNotNull(roles.get(0)), 1);
     }
     
-    private boolean isInitialized() {
-        return (permissionToRoles != null);
-    }
-    
     @Override
     public URI getAdminServerUrl() {
         return adminUrl;
+    }
+    
+    @Override
+    public boolean authSystem(String name, String pass) {
+        AdminData adminData = this.adminData;
+        if (adminData == null) {
+            return false;
+        }
+        
+        AppSystemDTO sysDto = adminData.systems.get(name);
+        if (sysDto == null) {
+            throw new OperationFailedException(
+                    CommonResponses.ENTITY_NOT_FOUND,
+                    "System (" + name + ") not found");
+        }
+        
+        return SafeDigest.digest(pass).equals(sysDto.getPassHash());
     }
     
     @Override
@@ -118,11 +138,12 @@ public abstract class AbstractRemoteAdminService implements PermissionService,
             return true;
         }
         
-        if (permissionToRoles == null) {
+        AdminData adminData = this.adminData;
+        if (adminData == null) {
             return false;
         }
         
-        int[] permRoles = permissionToRoles.get(p);
+        int[] permRoles = adminData.permissions.get(p);
         if (permRoles == null) {
             throw new OperationFailedException(
                     CommonResponses.ENTITY_NOT_FOUND,
@@ -139,24 +160,38 @@ public abstract class AbstractRemoteAdminService implements PermissionService,
         return false;
     }
     
+    private boolean isInitialized() {
+        return (adminData != null);
+    }
+    
     @Override
     public void reloadSettings() throws IOException {
-        AppSettingsDTO appDto;
+        AppConfRespDTO appDto;
         if (isInitialized()) {
             appDto = readSettings(null);
         } else {
             appDto = readSettings(permissRoot);
         }
-    
+        
+        Map<Permission, int[]> permissions;
         if (permissRoot != null) {
-            permissionToRoles = loadPermissions(permissRoot, 
+            permissions = loadPermissions(permissRoot, 
                     appDto.getPermissions());
         } else {
-            permissionToRoles = Collections.emptyMap();
+            permissions = Collections.emptyMap();
         }
+        
+        Map<String, AppSystemDTO> systems;
+        if (loadSystemInfo) {
+            systems = loadSystems(appDto.safeGetSystems());
+        } else {
+            systems = Collections.emptyMap();
+        }
+        
+        adminData = new AdminData(permissions, systems);
     }
     
-    protected AppSettingsDTO readSettings(PermissionNode permissRoot) 
+    protected AppConfRespDTO readSettings(PermissionNode permissRoot) 
             throws IOException {
         
         PermissionNodeDTO permissDto = null;
@@ -165,17 +200,18 @@ public abstract class AbstractRemoteAdminService implements PermissionService,
                     new PermissionNodeDTO(), permissRoot);
         }
         
-        AppSettingsDTO appDto = new AppSettingsDTO(permissDto);
+        AppConfReqDTO reqDto = new AppConfReqDTO(permissDto);
+        reqDto.setLoadSystemInfo(loadSystemInfo);
         
-        AppSettingsResponse resp = requestClient.create(requestParams, 
-                AdminRequests.APP_READ_SETTINGS, appDto, 
-                AppSettingsResponse.class);
+        AppConfResponse resp = requestClient.create(requestParams, 
+                AdminRequests.APP_READ_SETTINGS, reqDto, 
+                AppConfResponse.class);
         
         if (resp != null) {
             if (resp.getStatus() == BaseResponse.OK_STATUS) {
                 log.info("Settings read successfully");
                 
-                AppSettingsDTO settDto = resp.getData();
+                AppConfRespDTO settDto = resp.getData();
                 if (settDto != null) {
                     return settDto;
                 }
@@ -191,7 +227,19 @@ public abstract class AbstractRemoteAdminService implements PermissionService,
         throw new RuntimeException("Cannot read settings");
     }
 
-    protected static Map<Permission, int[]> loadPermissions(
+    protected Map<String, AppSystemDTO> loadSystems(
+            List<AppSystemDTO> systemsDto) {
+
+        Map<String, AppSystemDTO> systems = new HashMap<String, AppSystemDTO>();
+        for (AppSystemDTO dto : systemsDto) {
+            systems.put(dto.getName(), dto);
+        }
+        
+        log.info("Loaded " + systems.size() + " systems");
+        return systems;
+    }
+    
+    protected Map<Permission, int[]> loadPermissions(
             PermissionNode permissNode, PermissionNodeDTO permissDto) {
 
         Map<Permission, int[]> permissions = new HashMap<Permission, int[]>();
@@ -201,6 +249,7 @@ public abstract class AbstractRemoteAdminService implements PermissionService,
             loadPermissionNode("", n, nodes, permissions);
         }
         
+        log.info("Loaded permissions");
         return permissions;
     }
     
@@ -279,13 +328,29 @@ public abstract class AbstractRemoteAdminService implements PermissionService,
         dto.setPermissions(permiss);
         return dto;
     }
-        
+    
     private PermissionDTO convertToPermissionDTO(PermissionDTO dto, 
             Permission perm) {
         
         dto.setName(perm.getName());
         dto.setTitle(perm.getTitle());
         return dto;
+    }
+    
+    
+    private static final class AdminData {
+        
+        // permission to roles
+        private final Map<Permission, int[]>     permissions;
+        private final Map<String, AppSystemDTO>  systems;
+        
+        
+        public AdminData(Map<Permission, int[]> permissions,
+                Map<String, AppSystemDTO> systems) {
+            
+            this.permissions = permissions;
+            this.systems = systems;
+        }
     }
     
 }
