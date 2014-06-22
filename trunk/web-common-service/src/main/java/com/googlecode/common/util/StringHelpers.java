@@ -280,6 +280,22 @@ public final class StringHelpers {
         return (obj != null ? obj.toString() : "");
     }
     
+    /**
+     * Truncates the given string by the specified maximum length.
+     * 
+     * @param str       input string
+     * @param maxLength maximum length
+     * @return          truncated string if input string's length was greater 
+     *                  than <code>maxLength</code> or input string otherwise
+     */
+    public static String truncate(String str, int maxLength) {
+        if (str != null && str.length() > maxLength) {
+            return str.substring(0, maxLength);
+        }
+        
+        return str;
+    }
+    
     public static String trim(String str) {
         return (str != null ? str.trim() : null);
     }
