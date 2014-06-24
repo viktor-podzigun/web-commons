@@ -25,4 +25,12 @@ public interface AdminSettingsService {
      */
     public boolean authSystem(String name, String pass);
     
+    /**
+     * Returns system title by the given unique name.
+     * 
+     * @param name  system unique name
+     * @return      system title
+     */
+    public String getSystemTitle(String name);
+    
 }
