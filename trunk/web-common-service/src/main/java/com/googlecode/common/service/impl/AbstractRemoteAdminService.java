@@ -121,6 +121,21 @@ public abstract class AbstractRemoteAdminService implements PermissionService,
             return false;
         }
         
+        return SafeDigest.digest(pass).equals(
+                getAppSystem(adminData, name).getPassHash());
+    }
+    
+    @Override
+    public String getSystemTitle(String name) {
+        AdminData adminData = this.adminData;
+        if (adminData == null) {
+            return name;
+        }
+        
+        return getAppSystem(adminData, name).getTitle();
+    }
+    
+    private static AppSystemDTO getAppSystem(AdminData adminData, String name) {
         AppSystemDTO sysDto = adminData.systems.get(name);
         if (sysDto == null) {
             throw new OperationFailedException(
@@ -128,7 +143,7 @@ public abstract class AbstractRemoteAdminService implements PermissionService,
                     "System (" + name + ") not found");
         }
         
-        return SafeDigest.digest(pass).equals(sysDto.getPassHash());
+        return sysDto;
     }
     
     @Override
