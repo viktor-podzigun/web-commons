@@ -7,9 +7,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +44,7 @@ public abstract class AbstractRemoteAdminService implements PermissionService,
     @Autowired
     private JsonRequestService      requestClient;
     
-    private final ExecutorService   readerExecutor = 
-        Executors.newCachedThreadPool();
+    private final AbstractRemoteDataReader settingsReader;
     
     private PermissionNode          permissRoot;
     private boolean                 loadSystemInfo;
@@ -60,6 +56,18 @@ public abstract class AbstractRemoteAdminService implements PermissionService,
     
     protected AbstractRemoteAdminService(PermissionNode permissRoot) {
         this.permissRoot = permissRoot;
+        
+        settingsReader = new AbstractRemoteDataReader() {
+            @Override
+            protected void readData() throws IOException {
+                reloadSettings();
+            }
+            
+            @Override
+            protected void dataReady() {
+                settingsReady();
+            }
+        };
     }
 
     protected void setLoadSystemInfo(boolean loadSystemInfo) {
@@ -71,28 +79,17 @@ public abstract class AbstractRemoteAdminService implements PermissionService,
     }
     
     protected void setAdminUrl(URI adminUrl) {
-        this.adminUrl = adminUrl;
+        this.adminUrl      = adminUrl;
         this.requestParams = new RequestParams(adminUrl);
     }
     
     protected void initInternal() {
         // start reading remote settings asynchronously
-        readerExecutor.execute(new AbstractSettingsReader(this) {
-            @Override
-            protected void settingsReady() {
-                AbstractRemoteAdminService.this.settingsReady();
-            }
-        });
+        settingsReader.execute();
     }
     
     protected void destroyInternal() {
-        try {
-            readerExecutor.shutdownNow();
-            readerExecutor.awaitTermination(20, TimeUnit.SECONDS);
-        
-        } catch (InterruptedException x) {
-            throw new RuntimeException(x);
-        }
+        settingsReader.shutdown();
     }
     
     /**
