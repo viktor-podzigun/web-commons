@@ -2,6 +2,7 @@
 package com.googlecode.common.service;
 
 import java.net.URI;
+import java.util.List;
 
 
 /**
@@ -32,5 +33,11 @@ public interface AdminSettingsService {
      * @return      system title
      */
     public String getSystemTitle(String name);
+    
+    /**
+     * Returns registered systems (applications) names.
+     * @return registered systems (applications) names
+     */
+    public List<String> getSystems();
     
 }

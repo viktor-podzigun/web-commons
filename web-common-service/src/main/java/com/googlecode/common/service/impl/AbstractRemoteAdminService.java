@@ -3,6 +3,7 @@ package com.googlecode.common.service.impl;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -130,6 +131,16 @@ public abstract class AbstractRemoteAdminService implements PermissionService,
         }
         
         return getAppSystem(adminData, name).getTitle();
+    }
+    
+    @Override
+    public List<String> getSystems() {
+        AdminData adminData = this.adminData;
+        if (adminData == null) {
+            return Collections.emptyList();
+        }
+        
+        return new ArrayList<String>(adminData.systems.keySet());
     }
     
     private static AppSystemDTO getAppSystem(AdminData adminData, String name) {
