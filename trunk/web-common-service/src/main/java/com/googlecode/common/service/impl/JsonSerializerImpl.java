@@ -86,4 +86,15 @@ public class JsonSerializerImpl implements JsonSerializer {
     public void serializePretty(Object data, Writer out) throws IOException {
         serializer.serializePretty(data, out);
     }
+
+    @Override
+    public String serializePretty(Object data) {
+        return serializer.serializePretty(data);
+    }
+
+    @Override
+    public <T> T convertValue(Object fromValue, Class<T> toValueType) {
+        return serializer.convertValue(fromValue, toValueType);
+    }
+
 }
