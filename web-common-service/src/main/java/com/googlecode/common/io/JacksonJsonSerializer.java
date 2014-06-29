@@ -73,5 +73,21 @@ public final class JacksonJsonSerializer implements JsonSerializer {
 	public void serializePretty(Object data, Writer out) throws IOException {
 	    objectMapper.writerWithDefaultPrettyPrinter().writeValue(out, data);
 	}
+	
+	@Override
+	public String serializePretty(Object data) {
+	    try {
+            return objectMapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(data);
+        
+	    } catch (IOException x) {
+	        throw new RuntimeException(x);
+        }
+	}
+
+	@Override
+	public <T> T convertValue(Object fromValue, Class<T> toValueType) {
+	    return objectMapper.convertValue(fromValue, toValueType);
+	}
 
 }
