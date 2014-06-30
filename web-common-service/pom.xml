@@ -29,9 +29,9 @@
     </organization>
     
     <scm>
-       <connection>scm:svn:https://web-commons.googlecode.com/svn/tags/web-common-service/1.0.2</connection>
-       <developerConnection>scm:svn:https://web-commons.googlecode.com/svn/tags/web-common-service/1.0.2</developerConnection>
-       <url>scm:svn:https://web-commons.googlecode.com/svn/tags/web-common-service/1.0.2</url>
+       <connection>scm:svn:${svn.base.url}/trunk/${project.artifactId}</connection>
+       <developerConnection>scm:svn:${svn.base.url}/trunk/${project.artifactId}</developerConnection>
+       <url>${svn.base.url}/trunk/</url>
     </scm>
 
     <properties>
