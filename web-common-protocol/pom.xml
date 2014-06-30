@@ -12,7 +12,7 @@
     <groupId>com.googlecode.web-commons</groupId>
     <artifactId>web-common-protocol</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.2</version>
 
     <name>${project.artifactId}</name>
 
@@ -29,9 +29,9 @@
     </organization>
     
     <scm>
-       <connection>scm:svn:${svn.base.url}/trunk/${project.artifactId}</connection>
-       <developerConnection>scm:svn:${svn.base.url}/trunk/${project.artifactId}</developerConnection>
-       <url>${svn.base.url}/trunk/</url>
+       <connection>scm:svn:https://web-commons.googlecode.com/svn/tags/web-common-protocol/1.0.2</connection>
+       <developerConnection>scm:svn:https://web-commons.googlecode.com/svn/tags/web-common-protocol/1.0.2</developerConnection>
+       <url>scm:svn:https://web-commons.googlecode.com/svn/tags/web-common-protocol/1.0.2</url>
     </scm>
 
     <build>
