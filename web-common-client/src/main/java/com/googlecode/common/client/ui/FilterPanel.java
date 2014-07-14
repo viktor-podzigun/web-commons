@@ -10,6 +10,7 @@ import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -103,6 +104,10 @@ class FilterButtons extends Composite {
         this.panel  = panel;
         
         initWidget(binder.createAndBindUi(this));
+        
+        if (DOM.getInnerHTML(panel.getElement()).isEmpty()) {
+            btnFilter.setVisible(false);
+        }
     }
 
     @UiHandler("btnSearch")
