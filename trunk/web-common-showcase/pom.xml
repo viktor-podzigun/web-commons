@@ -169,8 +169,8 @@
                      </goals>
                      <configuration>
                        <sources>
-                         <source>../protocol/src/main/java</source>
-                         <source>../client/src/main/java</source>
+                         <source>../web-common-protocol/src/main/java</source>
+                         <source>../web-common-client/src/main/java</source>
                        </sources>
                      </configuration>
                    </execution>
@@ -183,7 +183,7 @@
                      <configuration>
                        <resources>
                          <resource>
-                           <directory>../client/src/main/resources</directory>
+                           <directory>../web-common-client/src/main/resources</directory>
                          </resource>
                        </resources>
                      </configuration>
