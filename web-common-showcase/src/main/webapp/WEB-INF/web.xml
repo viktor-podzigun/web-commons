@@ -15,7 +15,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>dummy</servlet-name>
-        <url-pattern>/login</url-pattern>
+        <url-pattern>/login/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>dummy</servlet-name>
