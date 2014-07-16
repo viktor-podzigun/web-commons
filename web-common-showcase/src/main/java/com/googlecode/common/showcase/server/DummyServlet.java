@@ -48,12 +48,12 @@ public class DummyServlet extends HttpServlet {
             writeLoginResp(writer);
         
         } else if (path.equals("/login/token")) {
-            if (token == null) {
-                resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                writer.write("{\"status\": 402}");
-            } else {
+//            if (token == null) {
+//                resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//                writer.write("{\"status\": 402}");
+//            } else {
                 writeLoginResp(writer);
-            }
+//            }
         } else if (path.equals("/logout")) {
             token = null;
             writer.write("{\"status\": 0}");
