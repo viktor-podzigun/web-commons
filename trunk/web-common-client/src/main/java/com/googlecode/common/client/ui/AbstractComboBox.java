@@ -21,7 +21,6 @@ public abstract class AbstractComboBox<T> extends Composite implements
     protected final ListBox listBox;
     protected final List<T> elements = new ArrayList<T>();
     
-    protected int           selectedIndex = -1;
     protected Command       selectCommand;
 
     
@@ -79,17 +78,8 @@ public abstract class AbstractComboBox<T> extends Composite implements
     }
     
     public void clear() {
-        selectedIndex = -1;
         elements.clear();
         listBox.clear();
-    }
-
-    public T getSelected() {
-        if (selectedIndex == -1) {
-            return null;
-        }
-        
-        return elements.get(selectedIndex);
     }
     
     public int setSelected(T value) {
@@ -103,14 +93,8 @@ public abstract class AbstractComboBox<T> extends Composite implements
         return newIndex;
     }
     
-    protected void onItemSelected(int selectedIndex) {
-        final int oldIndex = this.selectedIndex;
-        
-        this.selectedIndex = selectedIndex;
-        
-        if (selectCommand != null && oldIndex != selectedIndex) {
-            selectCommand.execute();
-        }
-    }
+    public abstract T getSelected();
+    
+    protected abstract void onItemSelected(int selectedIndex);
     
 }

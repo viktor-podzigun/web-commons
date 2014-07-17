@@ -2,6 +2,7 @@
 package com.googlecode.common.showcase.client.widgets;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -33,9 +34,15 @@ public final class ComboBoxPanelView extends AbstractPanelView {
     
     @UiField LoadableComboBox<String>   loadableComboBox;
     @UiField ImageLabel                 loadableComboBoxLabel;
+    
+    @UiField(provided=true) 
+    LoadableComboBox<String>            loadableComboBoxMS;
+    
+    @UiField ImageLabel                 loadableComboBoxLabelMS;
 
 
     public ComboBoxPanelView() {
+        loadableComboBoxMS = new LoadableComboBox<String>(true);
         initWidget(binder.createAndBindUi(this));
         
         comboBox.setInitValue(null);
@@ -47,18 +54,45 @@ public final class ComboBoxPanelView extends AbstractPanelView {
             }
         });
         
+        loadableComboBox.setLoadCommand(new Command() {
+            @Override
+            public void execute() {
+                TaskManager.INSTANCE.execute(new LoadTask(loadableComboBox));
+            }
+        });
         loadableComboBox.setSelectCommand(new Command() {
             @Override
             public void execute() {
                 loadableComboBoxLabel.setText(loadableComboBox.getSelected());
             }
         });
-        loadableComboBox.setLoadCommand(new Command() {
+        
+        loadableComboBoxMS.setLoadCommand(new Command() {
             @Override
             public void execute() {
-                TaskManager.INSTANCE.execute(new LoadTask());
+                TaskManager.INSTANCE.execute(new LoadTask(loadableComboBoxMS));
             }
         });
+        loadableComboBoxMS.setSelectCommand(new Command() {
+            @Override
+            public void execute() {
+                StringBuilder sb = new StringBuilder();
+                for (String item : loadableComboBoxMS.getSelectedList()) {
+                    if (sb.length() > 0) {
+                        sb.append(";");
+                    }
+                    
+                    sb.append(item);
+                }
+                
+                loadableComboBoxLabelMS.setText(sb.toString());
+            }
+        });
+        
+        loadableComboBox.setInitValue("Item 7");
+        
+        loadableComboBoxMS.setInitValueList(
+                Arrays.asList("Item 5", null, "Another Item", "Item 11", "Item 8"));
     }
     
     private List<String> createItems() {
@@ -67,11 +101,6 @@ public final class ComboBoxPanelView extends AbstractPanelView {
             list.add("Item " + i);
         }
         
-//        list.add("Item 1");
-//        list.add("Item 2");
-//        list.add("Item 3");
-//        list.add("Item 4");
-//        list.add("Item 5");
         return list;
     }
 
@@ -110,11 +139,14 @@ public final class ComboBoxPanelView extends AbstractPanelView {
         loadableComboBox.setReadOnly(!loadableComboBox.isReadOnly());
     }
 
-
     private class LoadTask extends AbstractTask {
         
-        public LoadTask() {
+        private final LoadableComboBox<String> combo;
+        
+        
+        public LoadTask(LoadableComboBox<String> combo) {
             super("Fetching data...");
+            this.combo = combo;
         }
         
         @Override
@@ -125,7 +157,7 @@ public final class ComboBoxPanelView extends AbstractPanelView {
             new Timer() {
                 @Override
                 public void run() {
-                    loadableComboBox.setLoadedDataAndShow(createItems());
+                    combo.setLoadedDataAndShow(createItems());
                     
                     onFinish();
                 }

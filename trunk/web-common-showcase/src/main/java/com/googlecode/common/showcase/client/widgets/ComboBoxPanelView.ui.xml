@@ -54,5 +54,21 @@
 <pre class="prettyprint linenums"><![CDATA[
 ]]></pre>
 
+    <h3>Loadable ComboBox with multiple selection</h3>
+    <p>Demonstrates LoadableComboBox MS functionality.</p>
+    <div class="bs-docs-example {style.example}">
+      <div class="row-fluid">
+        <div class="span6">
+          <c:LoadableComboBox ui:field="loadableComboBoxMS" />
+        </div>
+        <div class="span6">
+            Selected Item(s): 
+            <c:ImageLabel ui:field="loadableComboBoxLabelMS" />
+        </div>
+      </div>
+    </div>
+<pre class="prettyprint linenums"><![CDATA[
+]]></pre>
+
   </g:HTMLPanel>
 </ui:UiBinder>

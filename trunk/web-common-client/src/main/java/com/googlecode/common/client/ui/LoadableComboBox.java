@@ -1,6 +1,7 @@
 
 package com.googlecode.common.client.ui;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import com.google.gwt.core.client.GWT;
@@ -43,12 +44,17 @@ public class LoadableComboBox<T> extends AbstractComboBox<T> {
 
     private final PopupPanel popup  = new PopupPanel(true, true);
     
+    private List<T>         selectedObjs = new ArrayList<T>();
+    private List<T>         selObjsBeforeShow;
     private Command         loadCommand;
     private boolean         dataLoaded;
     
-    
     public LoadableComboBox() {
-        super(new ListBox(true));
+        this(false);
+    }
+    
+    public LoadableComboBox(final boolean isMultipleSelect) {
+        super(new ListBox(isMultipleSelect));
         
         initWidget(binder.createAndBindUi(this));
         
@@ -61,13 +67,6 @@ public class LoadableComboBox<T> extends AbstractComboBox<T> {
         popup.add(listBox);
         popup.setAutoHideOnHistoryEventsEnabled(true);
         popup.addAutoHidePartner(button.getElement());
-        
-        textField.addChangeHandler(new ChangeHandler() {
-            @Override
-            public void onChange(ChangeEvent event) {
-                selectedIndex = -1;
-            }
-        });
         
         button.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
             @Override
@@ -88,8 +87,13 @@ public class LoadableComboBox<T> extends AbstractComboBox<T> {
         popup.addCloseHandler(new CloseHandler<PopupPanel>() {
             @Override
             public void onClose(CloseEvent<PopupPanel> event) {
-                if (event.isAutoClosed()) {
-                    button.setDown(false);
+                button.setDown(false);
+                textField.setFocus(true);
+                
+                if (selectCommand != null && (selObjsBeforeShow.size() != selectedObjs.size() 
+                        || !selObjsBeforeShow.containsAll(selectedObjs))) {
+                    
+                    selectCommand.execute();
                 }
             }
         });
@@ -97,22 +101,33 @@ public class LoadableComboBox<T> extends AbstractComboBox<T> {
         listBox.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                onItemSelected(listBox.getSelectedIndex());
+                if (!isMultipleSelect) {
+                    setListVisible(false);
+                }
             }
         });
+        
+        listBox.addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent event) {
+                onItemSelected(0);
+            }
+        });
+        
         listBox.addKeyDownHandler(new KeyDownHandler() {
             @Override
             public void onKeyDown(KeyDownEvent event) {
                 final int keyCode = event.getNativeKeyCode();
                 if (keyCode == KeyCodes.KEY_ENTER) {
-                    onItemSelected(listBox.getSelectedIndex());
-                
+                    onItemSelected(0);
+                    setListVisible(false);
                 } else if (keyCode == KeyCodes.KEY_ESCAPE) {
                     setListVisible(false);
                 }
             }
         });
     }
+    
     @Override
     public void addStyleDependentName(String styleSuffix) {
         textField.addStyleDependentName(styleSuffix);
@@ -184,18 +199,107 @@ public class LoadableComboBox<T> extends AbstractComboBox<T> {
     public void clear() {
         super.clear();
         
+        selectedObjs.clear();
         dataLoaded = false;
         textField.setValue("");
     }
 
     @Override
     protected void onItemSelected(int selectedIndex) {
-        super.onItemSelected(selectedIndex);
+        List<T> items = getSelectedObjects();
+        if ((items.size() != selectedObjs.size() || !items.containsAll(selectedObjs))) {
+            selectedObjs = items;
+        }
         
-        T item = getSelected();
-        textField.setValue(item != null ? item.toString() : "");
+        StringBuilder sb = new StringBuilder();
+        for (T item : items) {
+            if (item != null) {
+                if (sb.length() > 0) {
+                    sb.append(", ");
+                }
+                
+                sb.append(item.toString());
+            }
+        }
         
-        setListVisible(false);
+        textField.setValue(sb.toString());
+    }
+    
+    @Override
+    public T getSelected() {
+        if (selectedObjs.isEmpty()) {
+            return null;
+        }
+        
+        // returns first element
+        return selectedObjs.get(0);
+    }
+    
+    public List<T> getSelectedList() {
+        return selectedObjs;
+    }
+    
+    public void setInitValueList(List<T> items) {
+        for (T item : items) {
+            if (!elements.contains(item)) {
+                addItem(item);
+            }
+            
+            listBox.setItemSelected(elements.indexOf(item), true);
+        }
+        
+        onItemSelected(0);
+        if (selectCommand != null) {
+            selectCommand.execute();
+        }
+    }
+    
+    @Override
+    public int setSelected(T value) {
+        final int newIndex = elements.indexOf(value);
+        if (newIndex == -1) {
+            return -1;
+        }
+        
+        // selects only this item, other selected items (if such exist) becomes deselected
+        listBox.setSelectedIndex(newIndex);
+        
+        onItemSelected(0);
+        if (selectCommand != null) {
+            selectCommand.execute();
+        }
+        
+        return newIndex;
+    }
+    
+    /**
+     * Selects only listed items in list (all items selected before and are 
+     * absent in list will be deselected).
+     * 
+     * @param items     list of objects need to select
+     */
+    public void setSelectedList(List<T> items) {
+        for (int index = 0; index < listBox.getItemCount(); index++) {
+            T item = elements.get(index);
+            listBox.setItemSelected(index, items.indexOf(item) != -1);
+        }
+        
+        onItemSelected(0);
+        if (selectCommand != null) {
+            selectCommand.execute();
+        }
+    }
+    
+    private List<T> getSelectedObjects() {
+        List<T> result = new ArrayList<T>();
+        
+        for (int index = 0; index < listBox.getItemCount(); index++) {
+            if (listBox.isItemSelected(index)) {
+                result.add(elements.get(index)); 
+            }
+        }
+        
+        return result;
     }
     
     public void setLoadCommand(Command command) {
@@ -207,8 +311,16 @@ public class LoadableComboBox<T> extends AbstractComboBox<T> {
             data = Collections.emptyList();
         }
         
-        clear();
-        addAll(data);
+        for (T item : data) {
+            int index = elements.indexOf(item);
+            if (index != -1) {
+                elements.remove(index);
+                listBox.removeItem(index);
+            }
+            
+            elements.add(item);
+            listBox.addItem(item != null ? item.toString() : "");
+        }
         
         dataLoaded = true;
         setListVisible(true);
@@ -226,16 +338,20 @@ public class LoadableComboBox<T> extends AbstractComboBox<T> {
         if (isVisible) {
             final int count = getItemCount();
             listBox.setVisibleItemCount(count > 10 ? 10 : count);
+            selObjsBeforeShow = new ArrayList<T>(selectedObjs);
             
-            listBox.setSelectedIndex(selectedIndex != -1 ? selectedIndex : 0);
+            for (T obj : selectedObjs) {
+                int index = elements.indexOf(obj);
+                listBox.setItemSelected(index, true);
+            }
+            
             listBox.setWidth("" + getOffsetWidth() + "px");
             popup.showRelativeTo(this);
             button.setDown(true);
             listBox.setFocus(true);
+            
         } else {
             popup.hide();
-            button.setDown(false);
-            textField.setFocus(true);
         }
     }
     
