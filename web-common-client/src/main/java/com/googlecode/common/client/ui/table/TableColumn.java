@@ -1,6 +1,7 @@
 
 package com.googlecode.common.client.ui.table;
 
+import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.user.cellview.client.Column;
 
@@ -20,7 +21,13 @@ public abstract class TableColumn<T> extends Column<T, String> {
     }
     
     public TableColumn(Enum<?> sortInfo, boolean isAscending) {
-        super(new TextCell());
+        this(sortInfo, isAscending, new TextCell());
+    }
+
+    public TableColumn(Enum<?> sortInfo, boolean isAscending, 
+            Cell<String> cell) {
+        
+        super(cell);
         
         if (sortInfo != null) {
             setSortable(true);
