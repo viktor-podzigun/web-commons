@@ -306,13 +306,24 @@ public class LoadableComboBox<T> extends AbstractComboBox<T> {
         this.loadCommand = command;
     }
     
-    public void setLoadedDataAndShow(List<T> data) {
+    @Override
+    public void addItem(T item) {
         int selectedIndex = listBox.getSelectedIndex();
-        if (data == null) {
-            data = Collections.emptyList();
+        super.addItem(item);
+        
+        if (!listBox.isMultipleSelect()) {
+            listBox.setSelectedIndex(selectedIndex);
+        }
+    }
+    
+    @Override
+    public void addAll(List<T> items) {
+        int selectedIndex = listBox.getSelectedIndex();
+        if (items == null) {
+            items = Collections.emptyList();
         }
         
-        for (T item : data) {
+        for (T item : items) {
             int index = elements.indexOf(item);
             if (index != -1) {
                 elements.remove(index);
@@ -326,6 +337,10 @@ public class LoadableComboBox<T> extends AbstractComboBox<T> {
         if (!listBox.isMultipleSelect()) {
             listBox.setSelectedIndex(selectedIndex);
         }
+    }
+    
+    public void setLoadedDataAndShow(List<T> data) {
+        addAll(data);
         
         dataLoaded = true;
         setListVisible(true);
