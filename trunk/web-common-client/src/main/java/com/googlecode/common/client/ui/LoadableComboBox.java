@@ -307,6 +307,7 @@ public class LoadableComboBox<T> extends AbstractComboBox<T> {
     }
     
     public void setLoadedDataAndShow(List<T> data) {
+        int selectedIndex = listBox.getSelectedIndex();
         if (data == null) {
             data = Collections.emptyList();
         }
@@ -320,6 +321,10 @@ public class LoadableComboBox<T> extends AbstractComboBox<T> {
             
             elements.add(item);
             listBox.addItem(item != null ? item.toString() : "");
+        }
+        
+        if (!listBox.isMultipleSelect()) {
+            listBox.setSelectedIndex(selectedIndex);
         }
         
         dataLoaded = true;
