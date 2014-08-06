@@ -16,11 +16,12 @@ body {
     }
 }
 
+
 .gwt-modal {
   position: fixed;
   top: 10%;
   left: 50%;
-  /*z-index: 1050;*/
+  z-index: 1050;
   /* new custom width */
   width: 560px;
   /* must be half of the width, minus scrollbar on the left (30px) */
@@ -41,7 +42,14 @@ body {
           background-clip: padding-box;
 }
 
-.gwt-PopupPanelGlass {
+/* z-order should be the same as in .gwt-modal */
+.gwt-PopupPanel {
+	z-index: 1050;
+}
+
+/* z-order should be the same as in .gwt-modal */
+.gwt-PopupPanelGlass { 
+  z-index: 1050;
   background-color: #000;
   opacity: 0.3;
   filter: alpha(opacity=30);

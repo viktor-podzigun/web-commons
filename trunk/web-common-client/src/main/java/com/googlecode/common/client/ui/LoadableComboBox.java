@@ -308,17 +308,22 @@ public class LoadableComboBox<T> extends AbstractComboBox<T> {
     
     @Override
     public void addItem(T item) {
-        int selectedIndex = listBox.getSelectedIndex();
+        boolean needToResetSelection = !listBox.isMultipleSelect() 
+                && listBox.getSelectedIndex() == -1;
+
         super.addItem(item);
-        
-        if (!listBox.isMultipleSelect()) {
-            listBox.setSelectedIndex(selectedIndex);
+
+        if (needToResetSelection) {
+            // we will have a selected first element if we will not do this
+            listBox.setSelectedIndex(-1);
         }
     }
     
     @Override
     public void addAll(List<T> items) {
-        int selectedIndex = listBox.getSelectedIndex();
+        boolean needToResetSelection = !listBox.isMultipleSelect() 
+                && listBox.getSelectedIndex() == -1;
+        
         if (items == null) {
             items = Collections.emptyList();
         }
@@ -334,8 +339,9 @@ public class LoadableComboBox<T> extends AbstractComboBox<T> {
             listBox.addItem(item != null ? item.toString() : "");
         }
         
-        if (!listBox.isMultipleSelect()) {
-            listBox.setSelectedIndex(selectedIndex);
+        if (needToResetSelection) {
+            // we will have a selected first element if we will not do this
+            listBox.setSelectedIndex(-1);
         }
     }
     
@@ -357,7 +363,7 @@ public class LoadableComboBox<T> extends AbstractComboBox<T> {
         
         if (isVisible) {
             final int count = getItemCount();
-            listBox.setVisibleItemCount(count > 10 ? 10 : count);
+            listBox.setVisibleItemCount(count > 10 ? 10 : (count < 2 ? 2 : count));
             selObjsBeforeShow = new ArrayList<T>(selectedObjs);
             
             for (T obj : selectedObjs) {
