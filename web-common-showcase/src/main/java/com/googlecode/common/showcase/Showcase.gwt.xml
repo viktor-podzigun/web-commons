@@ -5,6 +5,7 @@
     <inherits name='com.googlecode.common.App' />
     <inherits name='com.googlecode.common.Calendar' />
     <inherits name='com.googlecode.common.DatePicker' />
+    <inherits name='com.googlecode.common.ConfigUi' />
     
     <!-- We need the JUnit module in the main module,               -->
     <!-- otherwise eclipse complains (Google plugin bug?)           -->

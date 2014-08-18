@@ -2,6 +2,7 @@
 package com.googlecode.common.client.ui.panel;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -11,6 +12,7 @@ import com.google.gwt.user.cellview.client.TreeNode;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.common.client.app.AppMainPanel;
 import com.googlecode.common.client.ui.BrowseTreePanel;
@@ -40,6 +42,7 @@ public abstract class AbstractEditPanel extends Composite {
     @UiField(provided=true)
     BrowseTreePanel             browsePanel;
     
+    @UiField Element            treePanel;
     @UiField SimplePanel        contentPanel;
     
     private final AppMainPanel  appPanel;
@@ -60,6 +63,15 @@ public abstract class AbstractEditPanel extends Composite {
         btnCancel.setImage(ButtonImages.INSTANCE.cancel());
         
         browsePanel.setContentPanel(contentPanel);
+    }
+    
+    public void setContentSpanWidth(int spanWidth) {
+        if (spanWidth < 1 || spanWidth > 11) {
+            throw new IllegalArgumentException("spanWidth: " + spanWidth);
+        }
+        
+        UIObject.setStyleName(treePanel, "span" + (12 - spanWidth));
+        contentPanel.setStyleName("span" + spanWidth);
     }
     
     public void openAndSelectNode(BrowseTreeNode node) {

@@ -21,6 +21,7 @@ import com.googlecode.common.protocol.login.LoginRespDTO;
 import com.googlecode.common.showcase.client.widgets.ButtonsPanelView;
 import com.googlecode.common.showcase.client.widgets.CalendarPanelView;
 import com.googlecode.common.showcase.client.widgets.ComboBoxPanelView;
+import com.googlecode.common.showcase.client.widgets.ConfigPanelView;
 import com.googlecode.common.showcase.client.widgets.DatePickerPanelView;
 import com.googlecode.common.showcase.client.widgets.DialogPanelView;
 import com.googlecode.common.showcase.client.widgets.DropdownView;
@@ -136,6 +137,10 @@ public class Showcase extends AbstractClientApp implements ActionProvider  {
         
         widgets.add(new BrowseTreeNode("Calendar", new CalendarPanelView(), 
                 ButtonImages.INSTANCE.ok()));
+        
+        widgets.add(new BrowseTreeNode("Config", new ConfigPanelView(
+                    mainPanel, "Some Component"), 
+                ButtonImages.INSTANCE.edit()));
         
         BrowseTreeNode scroll = new BrowseTreeNode("Scrolling");
         root.add(scroll);

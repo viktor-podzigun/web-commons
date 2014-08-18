@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder' 
+             xmlns:g='urn:import:com.google.gwt.user.client.ui' 
+             xmlns:c="urn:import:com.googlecode.common.client.ui"
+             xmlns:v="urn:import:com.google.gwt.user.cellview.client"
+             xmlns:p="urn:import:com.googlecode.common.showcase.client.widgets">
+  
+  <ui:style>
+      .example {
+        background-color: #f5f5f5;
+      }
+  </ui:style>
+
+  <g:HTMLPanel>
+    
+    <h3>ConfigPanel</h3>
+    <p>Demonstrates configuration functionality.</p>
+    <div class="bs-docs-example {style.example}">
+      <g:HTMLPanel>
+        <form class="form-horizontal">
+          <div class="control-group">
+            <label class="control-label">Name:</label>
+            <div class="controls">
+              <c:TextField ui:field="textName" />
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">ID:</label>
+            <div class="controls">
+              <c:TextField ui:field="textId" />
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="controls">
+              <c:ImageButton ui:field="btnConfig" text="Configuration..." />
+            </div>
+          </div>
+        </form>
+      </g:HTMLPanel>
+    </div>
+<pre class="prettyprint linenums"><![CDATA[
+]]></pre>
+
+  </g:HTMLPanel>
+</ui:UiBinder>
