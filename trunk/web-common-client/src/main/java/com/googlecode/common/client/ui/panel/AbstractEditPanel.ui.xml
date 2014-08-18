@@ -19,7 +19,7 @@
     </div>
     <hr />
     <div class="row-fluid">
-      <div class="span4">
+      <div ui:field="treePanel" class="span4">
         <div class="well sidebar-nav">
           <c:ButtonsPanel ui:field="buttonsPanel" addStyleNames="{style.sidebar-bp}" />
           <c:BrowseTreePanel ui:field="browsePanel" />

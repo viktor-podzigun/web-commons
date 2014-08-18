@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder' 
+             xmlns:g='urn:import:com.google.gwt.user.client.ui' 
+             xmlns:c="urn:import:com.googlecode.common.client.ui">
+
+  <g:HTMLPanel>
+        <div class="row-fluid">
+            <c:ImageLabel ui:field="description" />
+            <hr />
+        </div>
+        <div class="row-fluid">
+            <g:FlowPanel ui:field="dataPanel" styleName="span6" />
+            <g:SimplePanel ui:field="infoPanel" styleName="span6" />
+        </div>
+  </g:HTMLPanel>
+
+</ui:UiBinder>
