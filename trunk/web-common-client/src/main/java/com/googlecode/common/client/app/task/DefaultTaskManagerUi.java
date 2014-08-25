@@ -1,6 +1,7 @@
 
 package com.googlecode.common.client.app.task;
 
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
@@ -81,16 +82,17 @@ public final class DefaultTaskManagerUi implements TaskManagerUi {
         // update status text
         ((Label)statusPopup.getWidget()).setText(text);
         
-        if (!statusPopup.isShowing()) {
-            statusPopup.setPopupPositionAndShow(new PositionCallback() {
-                @Override
-                public void setPosition(int offsetWidth, int offsetHeight) {
-                    // position at the bottom-left corner
-                    statusPopup.setPopupPosition(0, 
-                            Window.getClientHeight() - offsetHeight);
-                }
-            });
-        }
+        // need to re-show the status popup to update it's position
+        statusPopup.hide();
+        statusPopup.setPopupPositionAndShow(new PositionCallback() {
+            @Override
+            public void setPosition(int offsetWidth, int offsetHeight) {
+                // position at the bottom-left corner
+                statusPopup.setPopupPosition(0, 
+                        Window.getClientHeight() + Window.getScrollTop() 
+                        - offsetHeight);
+            }
+        });
     }
     
 }
