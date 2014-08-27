@@ -4,17 +4,11 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui' 
              xmlns:c="urn:import:com.googlecode.common.client.ui">
   
-  <ui:style>
-      .example {
-        background-color: #f5f5f5;
-      }
-  </ui:style>
-
   <g:HTMLPanel>
     
     <h3>PickList example</h3>
     <p>PickList is two-lists widget that allows visually add or remove items.</p>
-    <div class="bs-docs-example {style.example}">
+    <div class="bs-docs-example">
       <c:PickList ui:field="pickList" />
     </div>
 <pre class="prettyprint linenums"><![CDATA[

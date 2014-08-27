@@ -6,17 +6,11 @@
              xmlns:v="urn:import:com.google.gwt.user.cellview.client"
              xmlns:p="urn:import:com.googlecode.common.showcase.client.widgets">
   
-  <ui:style>
-      .example {
-        background-color: #f5f5f5;
-      }
-  </ui:style>
-
   <g:HTMLPanel>
     
     <h3>TablePanel</h3>
     <p>Demonstrates table functionality.</p>
-    <div class="bs-docs-example {style.example}">
+    <div class="bs-docs-example">
       <p:TablePanelView.PagingTableTest ui:field="pagingTable" />
     </div>
 <pre class="prettyprint linenums"><![CDATA[

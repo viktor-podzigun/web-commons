@@ -5,18 +5,12 @@
              xmlns:d='urn:import:com.googlecode.common.client.datepicker'
              xmlns:c="urn:import:com.googlecode.common.client.ui">
   
-  <ui:style>
-      .example {
-        background-color: #f5f5f5;
-      }
-  </ui:style>
-
   <g:HTMLPanel>
   
     <h3>SimpleDatePicker</h3>
     <p>Demonstrates SimpleDatePicker functionality.</p>
     <p>Type: Date and Time</p>
-    <div class="bs-docs-example {style.example}">
+    <div class="bs-docs-example">
         <form class="form-inline">
             <d:SimpleDatePicker ui:field="picker1" />
             <g:Button ui:field="btn1GetDate" styleName="btn btn-primary" text="Get Date" />
@@ -34,7 +28,7 @@ picker1 = new SimpleDatePicker();
 ]]></pre>
 
     <p>Type: Date only</p>
-    <div class="bs-docs-example {style.example}">
+    <div class="bs-docs-example">
         <form class="form-inline">
             <d:SimpleDatePicker ui:field="picker2" />
             <g:Button ui:field="btn2GetDate" styleName="btn btn-primary" text="Get Date" />
@@ -46,7 +40,7 @@ picker2 = new SimpleDatePicker(SimpleDatePicker.Type.DAY_ONLY);
 ]]></pre>
 
     <p>Type: Time only</p>
-    <div class="bs-docs-example {style.example}">
+    <div class="bs-docs-example">
          <form class="form-inline">
             <d:SimpleDatePicker ui:field="picker3" />
             <g:Button ui:field="btn3GetTimePeriod" styleName="btn btn-primary" text="Get Time Period" />
