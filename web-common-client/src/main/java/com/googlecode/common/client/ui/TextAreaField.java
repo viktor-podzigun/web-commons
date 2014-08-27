@@ -3,24 +3,24 @@ package com.googlecode.common.client.ui;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.PasswordTextBox;
+import com.google.gwt.user.client.ui.TextArea;
 import com.googlecode.common.client.ui.text.TextChangeEvent;
 import com.googlecode.common.client.ui.text.TextChangeEventHandler;
 
 
 /**
- * Custom password field with support of standard HTML attributes like 
+ * Custom text area field with support of standard HTML attributes like 
  * placeholder.
  * 
  * <p>Got from here:<br>
  * http://stackoverflow.com/questions/3939490/custom-attributes-in-uibinder-widgets
  */
-public final class PasswordField extends PasswordTextBox {
+public final class TextAreaField extends TextArea {
 
     /**
      * Creates an empty text box.
      */
-    public PasswordField() {
+    public TextAreaField() {
         TextField.sinkTextChangeEvents(this);
     }
 
@@ -39,6 +39,18 @@ public final class PasswordField extends PasswordTextBox {
      */
     public void setPlaceholder(String text) {
         TextField.setPlaceholder(this, text);
+    }
+    
+    public boolean isWordWrap() {
+        return !"off".equals(getElement().getAttribute("wrap"));
+    }
+
+    public void setWordWrap(boolean wrap) {
+        if (wrap) {
+            getElement().removeAttribute("wrap");
+        } else {
+            getElement().setAttribute("wrap", "off");
+        }
     }
 
     @Override

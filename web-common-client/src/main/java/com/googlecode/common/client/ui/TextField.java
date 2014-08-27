@@ -7,6 +7,7 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.common.client.ui.text.TextChangeEvent;
 import com.googlecode.common.client.ui.text.TextChangeEventHandler;
 
@@ -23,11 +24,7 @@ public final class TextField extends TextBox {
      * Creates an empty text box.
      */
     public TextField() {
-        // For all browsers - catch onKeyUp
-        sinkEvents(Event.ONKEYUP);
-
-        // For IE and Firefox - catch onPaste
-        sinkEvents(Event.ONPASTE);
+        sinkTextChangeEvents(this);
     }
 
     /**
@@ -35,7 +32,7 @@ public final class TextField extends TextBox {
      * @return the current placeholder text
      */
     public String getPlaceholder() {
-        return getElement().getPropertyString("placeholder");
+        return getPlaceholder(this);
     }
 
     /**
@@ -44,23 +41,40 @@ public final class TextField extends TextBox {
      * @param placeholder   the placeholder text
      */
     public void setPlaceholder(String text) {
-        text = (text != null ? text : "");
-        getElement().setPropertyString("placeholder", text);
+        setPlaceholder(this, text);
     }
 
     @Override
     public void onBrowserEvent(Event event) {
         super.onBrowserEvent(event);
 
+        onBrowserEvent(this, event);
+    }
+
+    public HandlerRegistration addTextChangeEventHandler(
+            TextChangeEventHandler handler) {
+    	
+        return addHandler(handler, TextChangeEvent.TYPE);
+    }
+    
+    static void sinkTextChangeEvents(Widget textWidget) {
+        // For all browsers - catch onKeyUp
+        textWidget.sinkEvents(Event.ONKEYUP);
+
+        // For IE and Firefox - catch onPaste
+        textWidget.sinkEvents(Event.ONPASTE);
+    }
+
+    static void onBrowserEvent(final Widget textWidget, Event event) {
         switch (event.getTypeInt()) {
         case Event.ONKEYUP:
         case Event.ONPASTE:{
-            // Scheduler needed so pasted data shows up in TextBox before we
-            // fire event
+            // Scheduler needed so pasted data shows up in text field
+            // before we fire event
             Scheduler.get().scheduleDeferred(new ScheduledCommand() {
                 @Override
                 public void execute() {
-                    fireEvent(new TextChangeEvent());
+                    textWidget.fireEvent(new TextChangeEvent());
                 }
             });
             break;
@@ -70,9 +84,13 @@ public final class TextField extends TextBox {
         }
     }
 
-    public HandlerRegistration addTextChangeEventHandler(
-            TextChangeEventHandler handler) {
-    	
-        return addHandler(handler, TextChangeEvent.TYPE);
+    static String getPlaceholder(Widget textWidget) {
+        return textWidget.getElement().getPropertyString("placeholder");
     }
+
+    static void setPlaceholder(Widget textWidget, String text) {
+        text = (text != null ? text : "");
+        textWidget.getElement().setPropertyString("placeholder", text);
+    }
+
 }
