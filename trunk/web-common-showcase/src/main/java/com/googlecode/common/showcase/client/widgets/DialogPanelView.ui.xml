@@ -4,17 +4,11 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui' 
              xmlns:c="urn:import:com.googlecode.common.client.ui">
   
-  <ui:style>
-      .example {
-        background-color: #f5f5f5;
-      }
-  </ui:style>
-
   <g:HTMLPanel>
     
     <h3>Modal</h3>
     <p>Popup with header, body, footer, and close button.</p>
-    <div class="bs-docs-example {style.example}">
+    <div class="bs-docs-example">
       <c:ImageButton ui:field="demoButton" text="Demo" primary="true" />
     </div>
 <pre class="prettyprint linenums"><![CDATA[
@@ -31,7 +25,7 @@ modal.show();
 
     <h3>MessageBox</h3>
     <p>Popup with header, message, input, and OK/YES/NO/CANCEL buttons.</p>
-    <div class="bs-docs-example {style.example}">
+    <div class="bs-docs-example">
       <c:ImageButton ui:field="msgButton" text="Message" primary="true" />
       <c:ImageButton ui:field="inputButton" text="Input" primary="true" />
       <c:ImageButton ui:field="confirmButton" text="Confirm" primary="true" />
@@ -64,7 +58,7 @@ box.showConfirm("Do You like Java?", new Command() {
 
     <h3>ErrorPanel</h3>
     <p>Popup with error message.</p>
-    <div class="bs-docs-example {style.example}">
+    <div class="bs-docs-example">
       <c:ImageButton ui:field="errorButton" text="Show Error" primary="true" />
     </div>
 <pre class="prettyprint linenums"><![CDATA[

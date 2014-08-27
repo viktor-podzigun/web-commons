@@ -2,9 +2,6 @@
 package com.googlecode.common.showcase.server;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.io.Writer;
 import java.util.Arrays;
 import javax.servlet.ServletException;
@@ -39,11 +36,11 @@ public class DummyServlet extends HttpServlet {
         
         Writer writer = resp.getWriter();
         
-        if (path.endsWith("/config")) {
-            writeConfigResp(writer);
-        } else {
+//        if (path.endsWith("/config")) {
+//            writeConfigResp(writer);
+//        } else {
             writeLoginResp(writer);
-        }
+//        }
     }
     
     @Override
@@ -96,44 +93,6 @@ public class DummyServlet extends HttpServlet {
         } catch (JSONException x) {
             throw new IOException(x);
         }
-    }
-    
-    private void writeConfigResp(Writer writer) throws IOException {
-        String schema = readResourceAsString(getClass().getClassLoader(), 
-                "/com/googlecode/common/showcase/server/config.schema.json");
-        
-        String data = readResourceAsString(getClass().getClassLoader(), 
-                "/com/googlecode/common/showcase/server/config.data.json");
-        
-        writer.write("{\"status\":0,\n"
-                + "\"data\":{\n"
-                    + "\"schema\":" + schema + ",\n"
-                    + "\"data\":" + data + "}\n"
-                + "}");
-    }
-
-    private static String readResourceAsString(ClassLoader cl, String path) 
-            throws IOException {
-        
-        InputStream is = cl.getResourceAsStream(path);
-        if (is == null) {
-            throw new IOException("Resource not found: " + path);
-        }
-        
-        return readCharsToStr(new InputStreamReader(is, "UTF-8"));
-    }
-    
-    private static String readCharsToStr(Reader reader) throws IOException {
-        StringBuilder sb = new StringBuilder();
-
-        char[] buf = new char[2048];
-        int len;
-        
-        while ((len = reader.read(buf)) > 0) {
-            sb.append(buf, 0, len);
-        }
-        
-        return sb.toString();
     }
     
 }

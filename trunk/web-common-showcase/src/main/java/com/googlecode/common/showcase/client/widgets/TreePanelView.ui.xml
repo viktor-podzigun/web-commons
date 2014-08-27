@@ -4,17 +4,11 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui' 
              xmlns:c="urn:import:com.googlecode.common.client.ui">
   
-  <ui:style>
-      .example {
-        background-color: #f5f5f5;
-      }
-  </ui:style>
-
   <g:HTMLPanel>
     
     <h3>CheckBoxTree</h3>
     <p>Tree panel with check boxes in nodes/leafs.</p>
-    <div class="bs-docs-example {style.example}">
+    <div class="bs-docs-example">
       <c:CheckBoxTree ui:field="checkTree" />
     </div>
 <pre class="prettyprint linenums"><![CDATA[
@@ -33,7 +27,7 @@ item2.addItem(new CheckBoxTreeNode(item2, "Item 3"));
 
     <h3>Read-only CheckBoxTree</h3>
     <p>Prefilled tree panel with read-only check boxes in nodes/leafs.</p>
-    <div class="bs-docs-example {style.example}">
+    <div class="bs-docs-example">
       <c:CheckBoxTree ui:field="readOnlyTree" />
     </div>
 <pre class="prettyprint linenums"><![CDATA[

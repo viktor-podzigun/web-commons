@@ -4,17 +4,11 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui' 
              xmlns:c="urn:import:com.googlecode.common.client.ui">
   
-  <ui:style>
-      .example {
-        background-color: #f5f5f5;
-      }
-  </ui:style>
-
   <g:HTMLPanel>
     
     <h3>DropdownButton</h3>
     <p>Demonstrates DropdownButton functionality.</p>
-    <div class="bs-docs-example {style.example}">
+    <div class="bs-docs-example">
       <c:DropdownButton ui:field="dropdownButton" />
       <c:ButtonsPanel ui:field="dropdownPanel" />
     </div>
@@ -38,7 +32,7 @@ dropdownButton.setImage(ButtonImages.INSTANCE.add());
 
     <h3>SplitButton</h3>
     <p>DropdownButton with default action.</p>
-    <div class="bs-docs-example {style.example}">
+    <div class="bs-docs-example">
       <c:SplitButton ui:field="splitButton" />
       <c:ButtonsPanel ui:field="splitPanel" />
     </div>

@@ -6,38 +6,24 @@
              xmlns:v="urn:import:com.google.gwt.user.cellview.client"
              xmlns:p="urn:import:com.googlecode.common.showcase.client.widgets">
   
-  <ui:style>
-      .example {
-        background-color: #f5f5f5;
-      }
-  </ui:style>
-
   <g:HTMLPanel>
     
     <h3>ConfigPanel</h3>
     <p>Demonstrates configuration functionality.</p>
-    <div class="bs-docs-example {style.example}">
-      <g:HTMLPanel>
-        <form class="form-horizontal">
-          <div class="control-group">
-            <label class="control-label">Name:</label>
-            <div class="controls">
-              <c:TextField ui:field="textName" />
+    <div class="bs-docs-example">
+        <div class="row-fluid">
+          <c:ImageButton ui:field="btnConfig" text="Edit configuration..." />
+        </div>
+        <div class="row-fluid">
+            <div class="span6">
+                <label>Configuration Schema</label>
+                <c:TextAreaField ui:field="textSchema" visibleLines="20" wordWrap="false" />
             </div>
-          </div>
-          <div class="control-group">
-            <label class="control-label">ID:</label>
-            <div class="controls">
-              <c:TextField ui:field="textId" />
+            <div class="span6">
+                <label>Configuration Data</label>
+                <c:TextAreaField ui:field="textData" visibleLines="20" wordWrap="false" />
             </div>
-          </div>
-          <div class="control-group">
-            <div class="controls">
-              <c:ImageButton ui:field="btnConfig" text="Configuration..." />
-            </div>
-          </div>
-        </form>
-      </g:HTMLPanel>
+        </div>
     </div>
 <pre class="prettyprint linenums"><![CDATA[
 ]]></pre>
