@@ -1,0 +1,39 @@
+{
+    "name": "root name",
+    "isDefault": false,
+    
+    "defItem": {
+        "size": 20,
+        "name": "Small"
+    },
+    
+    "childItems": [{
+        "size": 20,
+        "name": "Small"
+    },{
+        "size": 50,
+        "name": "Medium"
+    },{
+        "size": 100,
+        "name": "Large"
+    }],
+    
+    "objArrArr": [[{
+        "size": 1,
+        "name": "One"
+    }],[{
+        "size": 2,
+        "name": "Two"
+    },{
+        "size": 3,
+        "name": "Three"
+    }]],
+    
+    "intArray": [1, 2, 3],
+    
+    "intArrArr": [
+        [1, 2],
+        [3]
+    ]
+
+}
