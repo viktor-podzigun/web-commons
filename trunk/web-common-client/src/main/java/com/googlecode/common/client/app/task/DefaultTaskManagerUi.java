@@ -1,15 +1,14 @@
 
 package com.googlecode.common.client.app.task;
 
-import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.googlecode.common.client.task.TaskManagerUi;
 import com.googlecode.common.client.ui.CommonImages;
 import com.googlecode.common.client.ui.panel.ErrorPanel;
