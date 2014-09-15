@@ -60,7 +60,7 @@
         <dependency>
             <groupId>com.googlecode.web-commons</groupId>
             <artifactId>web-common-protocol</artifactId>
-            <version>1.0.3-SNAPSHOT</version>
+            <version>1.0.3</version>
         </dependency>
 
         <!-- RestyGWT -->
