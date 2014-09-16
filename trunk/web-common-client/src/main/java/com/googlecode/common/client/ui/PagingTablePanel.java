@@ -44,7 +44,7 @@ public abstract class PagingTablePanel<T> extends Composite {
     protected TablePanel<T>     table;
     
     @UiField(provided=true)
-    SimplePager                 pager;
+    protected SimplePager       pager;
     
     private final ListDataProvider<T> tableData = 
         new ListDataProvider<T>();
@@ -52,7 +52,7 @@ public abstract class PagingTablePanel<T> extends Composite {
     private final SingleSelectionModel<T> tableSelModel = 
         new SingleSelectionModel<T>();
     
-    private final HasRowsImpl   rowsImpl;
+    protected final HasRowsImpl rowsImpl;
     
     private final boolean       exactRowCount;
 
@@ -188,7 +188,7 @@ public abstract class PagingTablePanel<T> extends Composite {
     }
 
 
-    private class HasRowsImpl implements HasRows {
+    public class HasRowsImpl implements HasRows {
         
         private final HandlerManager    handlerManager;
         private Range                   range;
