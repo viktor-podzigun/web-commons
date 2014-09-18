@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <groupId>com.googlecode.web-commons</groupId>
+        <artifactId>web-common-parent</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../web-common-parent</relativePath>
+    </parent>
+
+    <groupId>com.googlecode.web-commons</groupId>
+    <artifactId>web-common-client</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0.4</version>
+    
+    <name>${project.artifactId}</name>
+    
+    <description>Contains common Web-client classes</description>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <organization>
+        <name>Google Code</name>
+    </organization>
+    
+    <properties>
+        <gwt-version>2.5.1</gwt-version>
+    </properties>
+    
+    <scm>
+       <connection>scm:svn:https://web-commons.googlecode.com/svn/tags/web-common-client/1.0.4</connection>
+       <developerConnection>scm:svn:https://web-commons.googlecode.com/svn/tags/web-common-client/1.0.4</developerConnection>
+       <url>scm:svn:https://web-commons.googlecode.com/svn/tags/web-common-client/1.0.4</url>
+    </scm>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                  <execution>
+                    <id>attach-sources</id>
+                    <goals>
+                        <goal>jar</goal>
+                    </goals>
+                  </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.googlecode.web-commons</groupId>
+            <artifactId>web-common-protocol</artifactId>
+            <version>1.0.3</version>
+        </dependency>
+
+        <!-- RestyGWT -->
+        <dependency>
+            <groupId>org.fusesource.restygwt</groupId>
+            <artifactId>restygwt</artifactId>
+            <version>1.3</version>
+        </dependency>
+        <!-- JAX-RS annotations -->
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>jsr311-api</artifactId>
+            <version>1.1</version>
+        </dependency>
+
+        <!-- GWT -->
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>${gwt-version}</version>
+        </dependency>
+        <!-- GWTEventBinder -->
+        <dependency>
+            <groupId>com.google.gwt.eventbinder</groupId>
+            <artifactId>eventbinder</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <!-- GIN -->
+        <dependency>
+            <groupId>com.google.gwt.inject</groupId>
+            <artifactId>gin</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+    </dependencies>
+
+    <developers>
+        <developer>
+            <id>viktorp</id>
+            <name>Viktor Podzigun</name>
+            <email>viktor.podzigun@gmail.com</email>
+        </developer>
+        <developer>
+            <id>olexandr</id>
+            <name>Olexandr Matyash</name>
+            <email>matyash.olexandr@gmail.com</email>
+        </developer>
+        <developer>
+            <id>vladislav</id>
+            <name>Vladislav Ogol</name>
+            <email>vladislav.ogol@gmail.com</email>
+        </developer>
+    </developers>
+
+</project>
