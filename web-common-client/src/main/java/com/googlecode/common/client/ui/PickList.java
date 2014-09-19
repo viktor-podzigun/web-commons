@@ -178,6 +178,14 @@ public class PickList<T> extends Composite {
     }
 
     public void setLists(List<T> srcList, List<T> dstList) {
+        if (srcList != null && !srcList.isEmpty()) {
+            sourceList.setVisibleRange(0, srcList.size());
+        }
+        
+        if (dstList != null && !dstList.isEmpty()) {
+            destList.setVisibleRange(0, dstList.size());
+        }
+        
         setDestinationList(dstList);
         setSourceList(srcList);
     }
