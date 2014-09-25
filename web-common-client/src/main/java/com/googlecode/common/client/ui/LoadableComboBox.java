@@ -101,6 +101,8 @@ public class LoadableComboBox<T> extends AbstractComboBox<T> {
         listBox.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                onItemSelected(0);
+
                 if (!isMultipleSelect) {
                     setListVisible(false);
                 }
@@ -118,10 +120,7 @@ public class LoadableComboBox<T> extends AbstractComboBox<T> {
             @Override
             public void onKeyDown(KeyDownEvent event) {
                 final int keyCode = event.getNativeKeyCode();
-                if (keyCode == KeyCodes.KEY_ENTER) {
-                    onItemSelected(0);
-                    setListVisible(false);
-                } else if (keyCode == KeyCodes.KEY_ESCAPE) {
+                if (keyCode == KeyCodes.KEY_ENTER || keyCode == KeyCodes.KEY_ESCAPE) {
                     setListVisible(false);
                 }
             }
