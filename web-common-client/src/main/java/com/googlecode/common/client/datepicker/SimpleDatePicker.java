@@ -6,10 +6,12 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.DomEvent;
+import com.google.gwt.event.dom.client.HasBlurHandlers;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
@@ -31,7 +33,7 @@ import com.googlecode.common.client.util.DateHelpers;
 
 
 public final class SimpleDatePicker extends Composite implements 
-        HasChangeHandlers {
+        HasChangeHandlers, HasBlurHandlers {
     
     public static enum Type {
        DATE_AND_TIME,
@@ -96,6 +98,21 @@ public final class SimpleDatePicker extends Composite implements
     @Override
     public HandlerRegistration addChangeHandler(ChangeHandler handler) {
         return addHandler(handler, ChangeEvent.getType());
+    }
+    
+    @Override
+    public HandlerRegistration addBlurHandler(BlurHandler handler) {
+        return textBox.addBlurHandler(handler);
+    }
+    
+    @Override
+    public void addStyleName(String style) {
+        textBox.addStyleName(style);
+    }
+    
+    @Override
+    public void removeStyleName(String style) {
+        textBox.removeStyleName(style);
     }
     
     @Override
