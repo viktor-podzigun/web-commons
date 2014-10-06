@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module SYSTEM "http://google-web-toolkit.googlecode.com/svn/releases/2.4/distro-source/core/src/gwt-module.dtd">
+<module>
+    <!-- Other modules -->
+    <inherits name='com.google.gwt.inject.Inject'/>
+    <inherits name='com.google.web.bindery.event.EventBinder'/>
+    
+    <!-- Inherit common modules -->
+    <inherits name='com.googlecode.common.Ui' />
+    <inherits name='com.googlecode.common.Http' />
+    <inherits name='com.googlecode.common.Protocol' />
+
+    <!-- Specify the paths for translatable code -->
+    <source path="client/app"/>
+
+</module>
