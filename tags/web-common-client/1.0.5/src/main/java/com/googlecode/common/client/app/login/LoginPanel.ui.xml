@@ -1,0 +1,64 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" 
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:c="urn:import:com.googlecode.common.client.ui">
+
+    <ui:style>
+      body {
+        background-color: #f5f5f5;
+      }
+
+      .form-parent {
+        padding-top: 40px;
+        padding-bottom: 40px;
+      }
+
+      .form-signin {
+        max-width: 300px;
+        padding: 19px 29px 29px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+      .form-signin .form-signin-heading {
+        margin-bottom: 10px;
+      }
+      .form-signin input[type="text"],
+      .form-signin input[type="password"] {
+        font-size: 16px;
+        height: auto;
+        margin-bottom: 15px;
+        padding: 7px 9px;
+      }
+    </ui:style>
+
+    <g:HTMLPanel addStyleNames="container {style.form-parent}">
+        <div class="{style.form-signin}">
+            <div class="{style.form-signin-heading}">
+                <g:Image ui:field="image" />
+            </div>
+            <c:TextField ui:field="textName" styleName="input-block-level" 
+                placeholder="Login" />
+            <c:PasswordField ui:field="textPassword" styleName="input-block-level"
+                placeholder="Password" />
+            <div class="row">
+                <div class="span4">
+                    <g:Button ui:field="btnLogin" styleName="btn btn-large btn-primary" 
+                        enabled="false" text="Sign in" />
+                </div>
+                <div class="span8">
+                    <label class="checkbox">
+                        <g:CheckBox ui:field="rememberMe" />Remember me
+                    </label>
+                </div>
+            </div>
+        </div>
+    </g:HTMLPanel>
+
+</ui:UiBinder>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module SYSTEM "http://google-web-toolkit.googlecode.com/svn/releases/2.4/distro-source/core/src/gwt-module.dtd">
+<module>
+    <!-- Inherit the core Web Toolkit stuff -->
+    <inherits name='com.google.gwt.user.User' />
+    <inherits name="com.google.gwt.json.JSON" />
+    
+    <source path="client/util"/>
+
+</module>

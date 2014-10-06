@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder' 
+             xmlns:g='urn:import:com.google.gwt.user.client.ui' 
+             xmlns:p1="urn:import:com.google.gwt.user.cellview.client"
+             xmlns:c="urn:import:com.googlecode.common.client.ui">
+
+  <g:HTMLPanel>
+    <div class="row-fluid">
+        <c:ImageLabel ui:field="description" />
+        <hr />
+    </div>
+    <div class="row-fluid">
+        <div class="span6">
+          <div class="row-fluid">
+              <c:ButtonsPanel ui:field="buttonsPanel" />
+              <p />
+          </div>
+          <div class="row-fluid">
+                <p1:CellList ui:field="cellList" />
+          </div>
+        </div>
+        <g:SimplePanel ui:field="infoPanel" styleName="span6" />
+    </div>
+  </g:HTMLPanel>
+
+</ui:UiBinder>
