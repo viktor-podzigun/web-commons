@@ -140,7 +140,7 @@ public class AppMainPanel extends Composite {
         
         final String settingsUrl = dto.getSettingsUrl();
         if (settingsUrl != null) {
-            userMenu.addMenuItem(new MenuItem("Settings", new Command() {
+            userMenu.addMenuItem(new MenuItem("Profile", new Command() {
                 @Override
                 public void execute() {
                     Window.Location.assign(settingsUrl + "?continue=" 
