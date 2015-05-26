@@ -12,7 +12,7 @@
     <groupId>com.googlecode.web-commons</groupId>
     <artifactId>web-common-service</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.3</version>
+    <version>1.0.4-SNAPSHOT</version>
     
     <name>${project.artifactId}</name>
     

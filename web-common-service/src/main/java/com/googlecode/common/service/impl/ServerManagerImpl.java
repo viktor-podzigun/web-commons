@@ -10,17 +10,17 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.jar.Manifest;
 import javax.inject.Singleton;
 import javax.servlet.ServletContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
 import com.googlecode.common.protocol.admin.ServerModuleDTO;
 import com.googlecode.common.protocol.admin.ServerStatusDTO;
 import com.googlecode.common.service.ServerManager;
 import com.googlecode.common.service.ServiceManager;
 import com.googlecode.common.service.SettingsService;
 import com.googlecode.common.util.ModuleInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
 
 
 /**
@@ -60,8 +60,7 @@ public class ServerManagerImpl implements ServerManager {
     @Override
     public List<ServerModuleDTO> getModules() {
         if (gmModules == null) {
-            gmModules = ModuleInfo.readAllByVendor(getClass().getClassLoader(), 
-                    "Win Interactive");
+            gmModules = ModuleInfo.readAll(getClass().getClassLoader());
         }
         
         List<ServerModuleDTO> list = new ArrayList<ServerModuleDTO>(

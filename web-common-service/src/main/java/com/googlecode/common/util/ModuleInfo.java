@@ -106,6 +106,10 @@ public final class ModuleInfo {
         }
     }
 
+    public static ModuleInfo[] readAll(ClassLoader cl) {
+        return readAllByVendor(cl, null);
+    }
+
     public static ModuleInfo[] readAllByVendor(ClassLoader cl, String vendor) {
         try {
             ArrayList<ModuleInfo> list = new ArrayList<ModuleInfo>();
@@ -115,8 +119,13 @@ public final class ModuleInfo {
                 URL url = resEnum.nextElement();
                 Manifest manifest = readManifest(url);
                 if (manifest != null) {
-                    Attributes mainAttribs = manifest.getMainAttributes();
-                    if (vendor.equals(mainAttribs.getValue(VENDOR))) {
+                    final Attributes mainAttribs = manifest.getMainAttributes();
+                    final String title = mainAttribs.getValue(TITLE);
+                    if ((vendor == null
+                                || vendor.isEmpty()
+                                || vendor.equals(mainAttribs.getValue(VENDOR)))
+                            && title != null && !title.startsWith("Apache Tomcat")) {
+
                         list.add(readFromManifest(manifest));
                     }
                 }
