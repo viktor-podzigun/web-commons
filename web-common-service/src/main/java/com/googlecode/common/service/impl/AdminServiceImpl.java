@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import com.googlecode.common.http.RequestException;
@@ -29,7 +30,6 @@ import com.googlecode.common.service.ex.OperationFailedException;
 import com.googlecode.common.util.UriHelpers;
 import com.googlecode.common.web.ServletHelpers;
 
-
 /**
  * Default implementation for {@link AdminService} interface.
  */
@@ -45,7 +45,10 @@ public class AdminServiceImpl implements AdminService {
     
     @Autowired
     private JsonRequestService      requestClient;
-    
+
+    @Value("${adminService.adminAppRoot:admin}")
+    private String adminAppRoot;
+
     private String                  systemName;
     private String                  adminServerUrl;
     
@@ -204,15 +207,19 @@ public class AdminServiceImpl implements AdminService {
         } else {
             // if we on the admin server then get URL from the request
             URI url = URI.create(ServletHelpers.getRequestUrl(req));
-            sb.append(UriHelpers.setPath(url, "/admin"));
+
+            sb.append(UriHelpers.setPath(url, getAdminAppRoot()));
         }
-        
-        sb.append("/signin.html");
+
+        if (!sb.toString().endsWith("/")) {
+            sb.append('/');
+        }
+
+        sb.append("signin.html");
         
         if (targetUrl != null) {
             try {
-                sb.append("?continue=")
-                    .append(URLEncoder.encode(targetUrl, "UTF-8"));
+                sb.append("?continue=").append(URLEncoder.encode(targetUrl, "UTF-8"));
             
             } catch (UnsupportedEncodingException x) {
                 // should never happen
@@ -223,4 +230,9 @@ public class AdminServiceImpl implements AdminService {
         return sb.toString();
     }
 
+    @Override
+    public String getAdminAppRoot() {
+        final String root = (adminAppRoot != null ? adminAppRoot : "/");
+        return (root.startsWith("/") ? root : "/" + root);
+    }
 }

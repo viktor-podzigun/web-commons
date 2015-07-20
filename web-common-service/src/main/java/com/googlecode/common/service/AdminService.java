@@ -53,5 +53,13 @@ public interface AdminService {
      * @return          login page redirect URL
      */
     public String getLoginRedirectUrl(HttpServletRequest req, String targetUrl);
-    
+
+    /**
+     * Returns admin application root.
+     *
+     * <p>Returning string is always starts with <code>/</code> character.
+     *
+     * @return admin application root, starts with <code>/</code> character
+     */
+    public String getAdminAppRoot();
 }

@@ -4,7 +4,6 @@ package com.googlecode.common.service;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import com.googlecode.common.i18n.MessageControl;
 import com.googlecode.i18n.annotations.MessageProvider;
 
 
@@ -53,8 +52,7 @@ public enum CommonResponses implements ResponseMessage {
     public String getMessage(Locale locale) {
         String key = toString();
         ResourceBundle bundle = ResourceBundle.getBundle(
-                CommonResponses.class.getName(), locale, 
-                MessageControl.INSTANCE);
+                CommonResponses.class.getName(), locale);
         
         try {
             return bundle.getString(key);
@@ -73,5 +71,4 @@ public enum CommonResponses implements ResponseMessage {
         
         return null;
     }
-
 }
