@@ -262,7 +262,7 @@ public final class ServletHelpers {
         
         Cookie cookie = new LongLivedCookie(name, value);
         cookie.setPath("/");
-        cookie.setHttpOnly(true);
+        //cookie.setHttpOnly(true);
         
         if (domain != null) {
             HttpServletRequest req = getRequest();

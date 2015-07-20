@@ -1,4 +1,3 @@
-
 package com.googlecode.common.web;
 
 import java.io.IOException;
@@ -29,7 +28,6 @@ import com.googlecode.common.service.ResponseMessage;
 import com.googlecode.common.service.ServerManager;
 import com.googlecode.common.service.ex.OperationFailedException;
 import com.googlecode.common.util.StringHelpers;
-
 
 /**
  * Servlet Filter used to catch errors from servlets and return 
@@ -85,23 +83,25 @@ public final class CommonFilter implements Filter {
     }
 
     @Override
-	public void doFilter(ServletRequest request, ServletResponse response, 
+	public void doFilter(ServletRequest request, ServletResponse res,
 	        FilterChain chain) throws IOException, ServletException {
-		
-        ServerManager serverManager = this.serverManager;
+
+        final StatusExposingServletResponse response = new StatusExposingServletResponse(
+                (HttpServletResponse) res);
+        final ServerManager serverManager = this.serverManager;
         if (serverManager != null) {
             serverManager.requestStarted();
         }
         
         boolean successReq = false;
-        boolean trace = log.isTraceEnabled();
+        final boolean trace = log.isTraceEnabled();
         long start = 0L;
         if (trace) {
             start = System.currentTimeMillis();
         }
         
 	    try {
-	        ServletHelpers.setRequest((HttpServletRequest)request);
+	        ServletHelpers.setRequest((HttpServletRequest) request);
 	        
 			chain.doFilter(request, response);
 			successReq = true;
@@ -109,8 +109,7 @@ public final class CommonFilter implements Filter {
 	    } catch (NestedServletException x) {
 	        Throwable t = x.getCause();
 	        if (t instanceof OperationFailedException) {
-	            writeOperationFailedException((OperationFailedException) t, 
-	                    request, response);
+	            writeOperationFailedException((OperationFailedException) t, request, response);
 	        } else {
 	            writeException(x, request, response);
 	        }
@@ -123,7 +122,7 @@ public final class CommonFilter implements Filter {
 		} finally {
 		    if (trace) {
     	        long time = System.currentTimeMillis() - start;
-    	        HttpServletRequest httpReq = (HttpServletRequest)request;
+    	        HttpServletRequest httpReq = (HttpServletRequest) request;
     	        String query = httpReq.getQueryString();
     	        log.trace("Rendering duration: " 
     	                + ServletHelpers.getRequestAddr() 
@@ -140,11 +139,10 @@ public final class CommonFilter implements Filter {
     }
 	
     private void writeOperationFailedException(OperationFailedException x, 
-            ServletRequest request, ServletResponse response) 
+            ServletRequest request, StatusExposingServletResponse response)
             throws IOException {
         
         HttpServletRequest  httpReq  = (HttpServletRequest)request;
-        HttpServletResponse httpResp = (HttpServletResponse)response;
         ResponseMessage respMsg = x.getResponseMessage();
         
         String error = "Error occurred while performing " + httpReq.getMethod() 
@@ -153,33 +151,33 @@ public final class CommonFilter implements Filter {
                         ", cause: " + x.getCause().toString() : "");
 
         if (respMsg == CommonResponses.AUTHENTICATION_FAILED) {
-            httpResp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             log.warn(error);
         
         } else if (respMsg == CommonResponses.ACCESS_DENIED) {
-            httpResp.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             log.warn(error);
         
         } else {
             log.error(error);
         }
         
-        serializeFailedResponse(httpReq, httpResp, respMsg, x);
+        serializeFailedResponse(httpReq, response, respMsg, x);
     }
 
-    private void writeException(Exception x, ServletRequest request, 
-            ServletResponse response) throws IOException {
+    private void writeException(Exception x, ServletRequest request,
+            StatusExposingServletResponse response) throws IOException {
         
         HttpServletRequest httpReq = (HttpServletRequest) request; 
         log.error("Error occurred while performing " + httpReq.getMethod() 
                 + " request to " + httpReq.getRequestURI(), x);
 
-        serializeFailedResponse(httpReq, (HttpServletResponse)response, 
+        serializeFailedResponse(httpReq, response,
                 CommonResponses.INTERNAL_SERVER_ERROR, x);
     }
     
-    private void serializeFailedResponse(HttpServletRequest httpReq, 
-            HttpServletResponse response, ResponseMessage respMsg, Exception x) 
+    private void serializeFailedResponse(HttpServletRequest httpReq,
+            StatusExposingServletResponse response, ResponseMessage respMsg, Exception x)
             throws IOException {
         
         StringWriter stackTrace = new StringWriter();
@@ -189,8 +187,7 @@ public final class CommonFilter implements Filter {
         BaseResponse resp;
         if ((response.getStatus() == HttpServletResponse.SC_UNAUTHORIZED 
                     || respMsg == CommonResponses.AUTHENTICATION_FAILED)
-                && httpReq.getServerName().endsWith(
-                        ServletHelpers.getAppDomain())) {
+                && httpReq.getServerName().endsWith(ServletHelpers.getAppDomain())) {
             
             resp = new LoginRedirectResponse(
                     adminService.getLoginRedirectUrl(httpReq, null));
@@ -211,5 +208,4 @@ public final class CommonFilter implements Filter {
         jsonSerializer.serialize(resp, writer);
         writer.flush();
     }
-
 }
